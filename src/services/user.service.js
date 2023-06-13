@@ -14,7 +14,7 @@ const verifyOTP = async (otp, email) => {
     // find email was registerd or not
     const user = await User.findOne({email})
     if (!user){
-        throw new Error("You haven't register with this email")
+        throw new Error("You haven't registered with this email")
     }
 
     //check OTP
@@ -39,7 +39,7 @@ const login = async (email, password) => {
         : await user.comparePassword(password)
 
     if (!(user && passwordCorrect)) {
-        throw new Error("invalid username or password")
+        throw new Error("Invalid username or password")
     }
 
     const token = await user.getJwtToken()

@@ -30,7 +30,7 @@ const errorHandler = (error, request, response, next) => {
             error: "token expired"
         })
     }
-    else if (error.message === "You haven't register with this email") {
+    else if (error.message === "You haven't registered with this email") {
         return response.status(404).json({
             error: error.message
         })

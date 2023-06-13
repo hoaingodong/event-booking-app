@@ -1,10 +1,11 @@
 const nodemailer = require('nodemailer');
+require("dotenv").config()
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'hoaingodong1@gmail.com',
-        pass: 'mwseufdksnkwpuek\n'
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD
     }
 });
 
@@ -21,7 +22,7 @@ const sendEmail = async (email, otp) =>
             '    </div>\n' +
             '    <p style="font-size:1.1em">Hi,</p>\n' +
             '    <p>Thank you for choosing Your Brand. Use the following OTP to complete your Sign Up procedures. OTP is valid for 5 minutes</p>\n' +
-            '    <h2 style="background: #7ed3ff;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">'+otp+'</h2>\n' +
+            '    <h2 style="background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">'+otp+'</h2>\n' +
             '    <p style="font-size:0.9em;">Regards,<br />My Hoai</p>\n' +
             '    <hr style="border:none;border-top:1px solid #eee" />\n' +
             '    <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">\n' +
