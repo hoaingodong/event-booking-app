@@ -26,12 +26,22 @@ const verifyOTP = async (request, response, next) =>{
     const body = request.body
     try {
         await userService.verifyOTP(body.otp, body.email)
-        response.status(200).json("successfully")
+        response.status(200).json("Verify OTP successfully")
+    } catch (exception) {
+        next(exception)
+    }
+}
+
+const login = async(request, response, next) =>{
+    const body = request.body
+    try {
+        const user = await userService.login(body.email, body.password)
+        response.status(200).json(user)
     } catch (exception) {
         next(exception)
     }
 }
 
 module.exports = {
-    createNew, verifyOTP
+    createNew, verifyOTP, login
 }

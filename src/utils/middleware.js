@@ -40,6 +40,11 @@ const errorHandler = (error, request, response, next) => {
             error: error.message
         })
     }
+    else if (error.message === "invalid username or password") {
+        return response.status(401).json({
+            error: error.message
+        })
+    }
     else {
         return response.status(502).json({error: "Error Server"})
     }

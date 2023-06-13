@@ -12,7 +12,7 @@ const createNew = async (user) => {
 
 const verifyOTP = async (otp, email) => {
     // find email was registerd or not
-    const user = await User.findOne({email:email})
+    const user = await User.findOne({email})
     if (!user){
         throw new Error("You haven't register with this email")
     }
@@ -31,6 +31,22 @@ const verifyOTP = async (otp, email) => {
     return user, result
 }
 
+const login = async (email, password) => {
+    const user = await User.findOne({ email: email, verified: true })
+
+    const passwordCorrect = user === null
+        ? false
+        : await user.comparePassword(password)
+
+    if (!(user && passwordCorrect)) {
+        throw new Error("invalid username or password")
+    }
+
+    const token = await user.getJwtToken()
+
+    return {token, user}
+}
+
 const generateOTP = () => {
     const digits = '0123456789';
     let OTP = '';
@@ -40,6 +56,7 @@ const generateOTP = () => {
     return OTP;
 }
 
+
 module.exports = {
-    createNew, verifyOTP
+    createNew, verifyOTP, login
 }
