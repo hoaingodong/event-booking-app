@@ -11,7 +11,11 @@ const eventSchema = mongoose.Schema({
         ref: "User"
     },
     topics: Array,
-    location: Object,
+    location:
+        {
+            type: {type: String},
+            coordinates: []
+        },
     address: String,
     started_date: Date,
     ended_date: Date
@@ -27,6 +31,8 @@ eventSchema.set("toJSON", {
         delete returnedObject.passwordHash
     }
 })
+
+eventSchema.index({'location':'2dsphere'})
 
 const Event = mongoose.model("Event", eventSchema)
 

@@ -15,5 +15,6 @@ router.post("/login", celebrate({[Segments.BODY]:loginSchema}), userController.l
 router.post("/send-email-reset-password", celebrate({[Segments.BODY]: {email: Joi.string().email().required()}}), userController.sendEmailResetPassword)
 router.post("/reset-password", celebrate({[Segments.BODY]:resetSchema}), userController.resetPassword)
 
+
 module.exports = router
 

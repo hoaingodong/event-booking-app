@@ -43,6 +43,25 @@ const filter = async (request, response, next) => {
    }
 }
 
+const filterLocation = async (request, response, next) => {
+   const body = request.body
+   const longitude = body.longitude
+   const latitude = body.latitude
+
+   try {
+      const events = await eventService.filter(body)
+      if (events) {
+         response.status(200).json(events)
+      } else {
+         return response.status(404).json({error: "Event not found"})
+      }
+   }
+
+   catch(exception) {
+      next(exception)
+   }
+}
+
 module.exports = {
-   getAll, getDetail, filter
+   getAll, getDetail, filter, filterLocation
 }

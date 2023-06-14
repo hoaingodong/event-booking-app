@@ -3,6 +3,7 @@ const emailService = require("./email.service")
 const NodeCache = require( "node-cache" );
 const bcrypt = require("bcryptjs");
 const myCache = new NodeCache();
+
 const createNew = async (user) => {
     const savedUser = await User.create({...user})
     const otp = generateOTP()
@@ -95,10 +96,15 @@ const resetPassword = async (email, password) => {
     return user
 }
 
+const filterLocation = async (longitude, latitude) => {
+
+}
+
 module.exports = {
     createNew,
     verifyOTP,
     login,
     sendEmailResetPassword,
-    resetPassword
+    resetPassword,
+    filterLocation
 }
