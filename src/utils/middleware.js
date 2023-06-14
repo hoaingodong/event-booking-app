@@ -40,7 +40,17 @@ const errorHandler = (error, request, response, next) => {
             error: error.message
         })
     }
-    else if (error.message === "invalid username or password") {
+    else if (error.message === "Invalid username or password") {
+        return response.status(401).json({
+            error: error.message
+        })
+    }
+    else if (error.message === "Account already activated") {
+        return response.status(401).json({
+            error: error.message
+        })
+    }
+    else if (error.message === "Your account has not been activated") {
         return response.status(401).json({
             error: error.message
         })
