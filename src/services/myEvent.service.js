@@ -13,7 +13,6 @@ const createNew = async (user_id, event_id) => {
         throw new Error("Event not found")
     }
 
-
     const myEvent = {
         user_id: user_id,
         event_id: event_id

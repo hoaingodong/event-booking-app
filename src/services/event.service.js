@@ -51,6 +51,18 @@ const filterLocation = async (longitude, latitude) => {
     return events
 }
 
+const search = async (body) => {
+    let events = await Event.find({})
+
+    const keyword = body.keyword.toLowerCase().replace(/\s+/g, ' ').trim()
+
+    if (keyword) {
+        events = await events.filter(element => element.title.toLowerCase().includes(keyword))
+    }
+
+    return events
+}
+
 module.exports = {
-    getAll, getDetail, filter, filterLocation
+    getAll, getDetail, filter, filterLocation, search
 }

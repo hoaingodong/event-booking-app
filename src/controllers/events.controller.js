@@ -61,6 +61,23 @@ const filterLocation = async (request, response, next) => {
    }
 }
 
+const search = async (request, response, next) => {
+   const body = request.body
+
+   try {
+      const events = await eventService.search(body)
+      if (events) {
+         response.status(200).json(events)
+      } else {
+         return response.status(404).json({error: "Event not found"})
+      }
+   }
+
+   catch(exception) {
+      next(exception)
+   }
+}
+
 module.exports = {
-   getAll, getDetail, filter, filterLocation
+   getAll, getDetail, filter, filterLocation, search
 }
