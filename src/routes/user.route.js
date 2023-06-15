@@ -14,6 +14,7 @@ router.post("/login", celebrate({[Segments.BODY]:loginSchema}), userController.l
 //forgot password - nhập vào email thui (kiểm tra đã verified otp đợt đầu hay chưa) - gửi otp cho email - nhập otp - nhập password, confirmpassword ->ok
 router.post("/send-email-reset-password", celebrate({[Segments.BODY]: {email: Joi.string().email().required()}}), userController.sendEmailResetPassword)
 router.post("/reset-password", celebrate({[Segments.BODY]:resetSchema}), userController.resetPassword)
+router.get("/", userController.getAll)
 
 
 module.exports = router

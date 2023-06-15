@@ -1,5 +1,6 @@
 const userService = require("../services/user.service")
 const bcrypt = require("bcryptjs")
+const {request, response} = require("express");
 
 const createNew = async (request, response, next) => {
 
@@ -62,6 +63,15 @@ const resetPassword = async (request, response, next) => {
     }
 }
 
+const getAll = async (request, response, next) => {
+    try {
+        const user = await userService.getAll()
+        response.status(200).json(user)
+    } catch (exception) {
+        next(exception)
+    }
+}
+
 module.exports = {
-    createNew, verifyOTP, login, sendEmailResetPassword, resetPassword
+    createNew, verifyOTP, login, sendEmailResetPassword, resetPassword, getAll
 }
