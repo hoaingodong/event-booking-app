@@ -13,8 +13,11 @@ const eventSchema = mongoose.Schema({
     topics: Array,
     location:
         {
-            type: {type: String},
-            coordinates: []
+            type: {type: String, default: "Point"},
+            coordinates: {
+                type: [Number]
+            },
+
         },
     address: String,
     started_date: Date,
@@ -32,7 +35,7 @@ eventSchema.set("toJSON", {
     }
 })
 
-eventSchema.index({'location':'2dsphere'})
+eventSchema.index({"location":"2dsphere"})
 
 const Event = mongoose.model("Event", eventSchema)
 

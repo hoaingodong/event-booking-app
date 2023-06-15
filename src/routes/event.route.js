@@ -7,7 +7,7 @@ const {celebrate, Segments} = require("celebrate");
 router.get("/", eventController.getAll)
 router.get("/:id", eventController.getDetail)
 router.post("/filter", celebrate({[Segments.BODY]:filterSchema}), eventController.filter)
-router.post("/filter-location", celebrate({[Segments.BODY]:filterSchema}), eventController.filterLocation)
+router.post("/filter-location", eventController.filterLocation)
 
 
 module.exports = router

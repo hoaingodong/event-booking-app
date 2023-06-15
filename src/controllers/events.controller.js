@@ -45,11 +45,10 @@ const filter = async (request, response, next) => {
 
 const filterLocation = async (request, response, next) => {
    const body = request.body
-   const longitude = body.longitude
-   const latitude = body.latitude
-
+   const longitude = parseFloat(body.longitude)
+   const latitude = parseFloat(body.latitude)
    try {
-      const events = await eventService.filter(body)
+      const events = await eventService.filterLocation(longitude, latitude)
       if (events) {
          response.status(200).json(events)
       } else {

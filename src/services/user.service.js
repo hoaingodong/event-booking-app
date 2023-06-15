@@ -96,15 +96,10 @@ const resetPassword = async (email, password) => {
     return user
 }
 
-const filterLocation = async (longitude, latitude) => {
-
-}
-
 module.exports = {
     createNew,
     verifyOTP,
     login,
     sendEmailResetPassword,
-    resetPassword,
-    filterLocation
+    resetPassword
 }
