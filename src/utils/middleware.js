@@ -55,6 +55,16 @@ const errorHandler = (error, request, response, next) => {
             error: error.message
         })
     }
+    else if (error.message === "User not found") {
+        return response.status(404).json({
+            error: error.message
+        })
+    }
+    else if (error.message === "Event not found") {
+        return response.status(404).json({
+            error: error.message
+        })
+    }
     else {
         return response.status(502).json({error: "Error Server"})
     }
