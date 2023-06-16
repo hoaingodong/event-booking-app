@@ -65,6 +65,16 @@ const errorHandler = (error, request, response, next) => {
             error: error.message
         })
     }
+    else if (error.message === "Delete Image unsuccessfully!") {
+        return response.status(404).json({
+            error: error.message
+        })
+    }
+    else if (error.message === "Can not delete your avatar!") {
+        return response.status(404).json({
+            error: error.message
+        })
+    }
     else {
         return response.status(502).json({error: "Error Server"})
     }
