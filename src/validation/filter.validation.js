@@ -9,6 +9,14 @@ const filterSchema= Joi.object().keys({
     maxPrice: Joi.number(),
     minDate: Joi.date().greater(now()),
     maxDate: Joi.date().greater(now()),
+    longitude: [
+        Joi.number().required(),
+        Joi.number().required()
+    ],
+    latitude: [
+        Joi.number().required(),
+        Joi.number().required()
+    ]
 })
 
 module.exports = filterSchema

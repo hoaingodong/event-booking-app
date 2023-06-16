@@ -13,6 +13,10 @@ const getDetail = async (id) => {
 const filter = async (body) => {
     let events = await Event.find({})
 
+    if (body.longitude && body.latitude){
+        events = await filterLocation(body.longitude, body.latitude)
+    }
+
     if (body.topics) {
         events = events.filter(element => element.topics.some(item=> body.topics.includes(item)))
     }
@@ -40,14 +44,13 @@ const filterLocation = async (longitude, latitude) => {
                     type: 'Point',
                     coordinates: [parseFloat(longitude), parseFloat(latitude)]
                 },
-                maxDistance: 10,
+
+                maxDistance: 10 * 1000,
                 distanceField: 'distance',
-                distanceMultiplier: 1 / 10
+                distanceMultiplier: 1/1000,
+                key: "location"
             }
-
         }])
-
-    console.log(events)
 
     return events
 }
