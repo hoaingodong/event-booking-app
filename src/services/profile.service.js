@@ -2,7 +2,8 @@ const imageService = require("./image.service");
 const User = require("../models/user.model")
 const cloudinary = require("cloudinary")
 const Event = require("../models/event.model");
-const MyEvent = require("../models/myEvent.model");
+const Review = require("../models/review.model");
+
 
 const uploadAvatar = async (user_id, file) => {
 
@@ -58,7 +59,8 @@ const profileAbout = async (id) => {
 
 const profileReviews = async (id) => {
 
-    return users
+    const reviews = await Review.find({user_id: id}).populate("to_user")
+    return reviews
 }
 
 module.exports = {

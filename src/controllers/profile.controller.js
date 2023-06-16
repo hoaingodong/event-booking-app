@@ -43,8 +43,8 @@ const profileEvent = async (request, response, next) => {
     const id = request.params.id
 
     try {
-        const detailedUser = await profileService.profileEvent(id)
-        response.status(201).json(detailedUser)
+        const events = await profileService.profileEvent(id)
+        response.status(201).json(events)
     } catch (exception) {
         next(exception)
     }
@@ -65,13 +65,12 @@ const profileReviews = async (request, response, next) => {
     const id = request.params.id
 
     try {
-        const detailedUser = profileService.profileReviews(id)
-        response.status(201).json(detailedUser)
+        const reviews = await profileService.profileReviews(id)
+        response.status(201).json(reviews)
     } catch (exception) {
         next(exception)
     }
 }
-
 
 module.exports = {
   uploadAvatar, editAvatar, deleteAvatar, profileEvent, profileAbout, profileReviews
