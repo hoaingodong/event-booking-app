@@ -40,11 +40,12 @@ const filterLocation = async (longitude, latitude) => {
                     type: 'Point',
                     coordinates: [parseFloat(longitude), parseFloat(latitude)]
                 },
-                maxDistance: 10,
-                distanceField: 'distance',
-                distanceMultiplier: 1 / 10
-            }
 
+                maxDistance: 5 * 1000,
+                distanceField: 'distance',
+                distanceMultiplier: 1/1000,
+                key: "location"
+            }
         }])
 
     console.log(events)
