@@ -5,6 +5,7 @@ const userSchema = Joi.object().keys({
     email: Joi.string().email().required(),
     password: Joi.string().min(4).required(),
     repeat_password: Joi.ref("password"),
+    role: Joi.string().valid('ADMIN', 'USER', "ORGANIZER")
 })
 
 module.exports = userSchema

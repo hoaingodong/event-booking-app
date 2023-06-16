@@ -33,18 +33,19 @@ const filter = async (body) => {
 }
 
 const filterLocation = async (longitude, latitude) => {
-    const events =  await Event.aggregate([
-        {
+    const events = await Event.aggregate(
+        [{
             $geoNear: {
-                near: { type: "Point", coordinates: [Number(latitude), Number(longitude)]},
-                distanceField: "distance", // required
-                maxDistance: 20,
-                includeLocs: "location",
-                spherical: true,
-                key: 'location'
+                near: {
+                    type: 'Point',
+                    coordinates: [parseFloat(longitude), parseFloat(latitude)]
+                },
+                maxDistance: 10,
+                distanceField: 'distance',
+                distanceMultiplier: 1 / 10
             }
-        }
-    ]);
+
+        }])
 
     console.log(events)
 

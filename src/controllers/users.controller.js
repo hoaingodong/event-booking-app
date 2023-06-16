@@ -12,6 +12,7 @@ const createNew = async (request, response, next) => {
     const user = {
         name: body.name,
         email: body.email,
+        role: body.role,
         passwordHash,
     }
 
