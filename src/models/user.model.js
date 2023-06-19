@@ -14,9 +14,15 @@ const userSchema = mongoose.Schema({
         default: "USER"
     },
     passwordHash: String,
-    interest: Array,
-    following: Number,
-    followers: Number,
+    interests: Array,
+    following: {
+        type: Number,
+        default: 0
+    },
+    followers: {
+        type: Number,
+        default: 0
+    },
     bio: String,
     avatar:	Object,
     verified: {

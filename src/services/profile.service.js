@@ -58,10 +58,26 @@ const profileAbout = async (id) => {
 
 const profileReviews = async (id) => {
 
-    const reviews = await Review.find({user_id: id}).populate("to_user")
+    const reviews = await Review.find({user_id: id}).populate("to_user").populate("from_user")
     return reviews
 }
 
+const editProfile = async (id, body) => {
+
+    const profile = {
+        interests: body.interests,
+        bio: body.bio
+    }
+
+    console.log(profile.interests)
+
+    const savedProfile = await User.findByIdAndUpdate(id, profile)
+
+    console.log(savedProfile)
+
+    return savedProfile
+}
+
 module.exports = {
-    uploadAvatar, deleteAvatar, profileEvent, profileAbout, profileReviews
+    uploadAvatar, deleteAvatar, profileEvent, profileAbout, profileReviews, editProfile
 }
