@@ -27,7 +27,7 @@ const getDetail = async (request, response, next) => {
 }
 
 const filter = async (request, response, next) => {
-   const body = request.body
+   const body = request.query
 
    try {
       const events = await eventService.filter(body)
@@ -44,7 +44,7 @@ const filter = async (request, response, next) => {
 }
 
 const filterLocation = async (request, response, next) => {
-   const body = request.body
+   const body = request.query
    const longitude = parseFloat(body.longitude)
    const latitude = parseFloat(body.latitude)
    try {
@@ -62,8 +62,8 @@ const filterLocation = async (request, response, next) => {
 }
 
 const search = async (request, response, next) => {
-   const body = request.body
-
+   const body = request.query
+   
    try {
       const events = await eventService.search(body)
       if (events) {
@@ -77,6 +77,7 @@ const search = async (request, response, next) => {
       next(exception)
    }
 }
+
 
 module.exports = {
    getAll, getDetail, filter, filterLocation, search
