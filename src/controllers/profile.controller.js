@@ -1,7 +1,7 @@
 const profileService = require("../services/profile.service")
 const uploadAvatar = async (request, response, next) => {
 
-    const user_id = request.body.user_id
+    const user_id = request.params.id
     const file = request.files[0]
 
     try {
@@ -14,7 +14,7 @@ const uploadAvatar = async (request, response, next) => {
 
 const editAvatar = async (request, response, next) => {
 
-    const user_id = request.body.user_id
+    const user_id = request.params.id
     const file = request.files[0]
 
     let savedUser;
@@ -29,10 +29,9 @@ const editAvatar = async (request, response, next) => {
 
 const deleteAvatar = async (request, response, next) => {
 
-    const user_id = request.body.user_id
-    const avatar_id = request.body.avatar_id
+    const user_id = request.params.id
     try {
-        const savedUser = await profileService.deleteAvatar(user_id, avatar_id)
+        const savedUser = await profileService.deleteAvatar(user_id)
         response.status(201).json(savedUser)
     } catch (exception) {
         next(exception)

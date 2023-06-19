@@ -4,7 +4,11 @@ const uniqueValidator = require("mongoose-unique-validator")
 const reviewSchema = mongoose.Schema({
     content: String,
     stars: Number,
-    organizer_id: {
+    from_user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    },
+    to_user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },

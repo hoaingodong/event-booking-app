@@ -12,7 +12,5 @@ router.post("/filter", celebrate({[Segments.BODY]:filterSchema}), eventControlle
 router.post("/filter-location", celebrate({[Segments.BODY]:locationSchema}),  eventController.filterLocation)
 router.post("/search", celebrate({[Segments.BODY]: {keyword: Joi.string().required()}}), eventController.search)
 
-
-
 module.exports = router
 

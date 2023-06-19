@@ -4,7 +4,6 @@ const cloudinary = require("cloudinary")
 const Event = require("../models/event.model");
 const Review = require("../models/review.model");
 
-
 const uploadAvatar = async (user_id, file) => {
 
     let user = await User.findById(user_id)
@@ -59,7 +58,7 @@ const profileAbout = async (id) => {
 
 const profileReviews = async (id) => {
 
-    const reviews = await Review.find({user_id: id}).populate("user_id")
+    const reviews = await Review.find({user_id: id}).populate("to_user")
     return reviews
 }
 
