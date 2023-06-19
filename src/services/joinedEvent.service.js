@@ -41,7 +41,7 @@ const getUpcomingEvent = async (user_id) => {
     }
     const myEvents = await JoinedEvent.find({user: user_id}).populate("event")
 
-    const myUpcomingEvents = await myEvents.filter(element => element.events.started_date > Date.now())
+    const myUpcomingEvents = await myEvents.filter(element => element.event.started_date > Date.now())
 
     return myUpcomingEvents
 }

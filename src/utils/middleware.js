@@ -108,17 +108,17 @@ const tokenValidator = (request, response, next) => {
     next()
 }
 
-// const userExtractor = async (request, response, next) => {
-//     const token = request.token
-//     const decodedToken = jwt.verify(token, process.env.SECRET)
-//     const user = await User.findById(decodedToken.id)
-//     if (!user){
-//         return response.status(401).json({error: "Unauthorized"})
-//     }
-//     request["user"] = user
-//
-//     next()
-// }
+const userExtractor = async (request, response, next) => {
+    const token = request.token
+    const decodedToken = jwt.verify(token, process.env.SECRET)
+    const user = await User.findById(decodedToken.id)
+    if (!user){
+        return response.status(401).json({error: "Unauthorized"})
+    }
+    request["user"] = user
+
+    next()
+}
 
 module.exports = {
     requestLogger,
@@ -126,5 +126,5 @@ module.exports = {
     errorHandler,
     tokenExtractor,
     tokenValidator,
-    // userExtractor,
+    userExtractor,
 }
