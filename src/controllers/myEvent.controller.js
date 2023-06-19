@@ -19,7 +19,7 @@ const getAll = async (request, response, next) => {
 
     try {
         const myEvents = await myEventService.getAll(user_id)
-        response.status(201).json(myEvents)
+        response.status(200).json(myEvents)
     } catch (exception) {
         next(exception)
     }
@@ -31,7 +31,7 @@ const getUpcomingEvent = async (request, response, next) => {
 
     try {
         const myUpcomingEvents = await myEventService.getUpcomingEvent(user_id)
-        response.status(201).json(myUpcomingEvents)
+        response.status(200).json(myUpcomingEvents)
     } catch (exception) {
         next(exception)
     }
@@ -43,7 +43,7 @@ const getLastEvent = async (request, response, next) => {
 
     try {
         const myLastEvents = await myEventService.getLastEvent(user_id)
-        response.status(201).json(myLastEvents)
+        response.status(200).json(myLastEvents)
     } catch (exception) {
         next(exception)
     }
