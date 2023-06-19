@@ -14,8 +14,8 @@ const createNew = async (user_id, event_id) => {
     }
 
     const myEvent = {
-        user_id: user_id,
-        event_id: event_id
+        users: user_id,
+        events: event_id
     }
 
     const savedMyEvent = await MyEvent.create({...myEvent})
@@ -29,7 +29,7 @@ const getAll = async (user_id) => {
         throw new Error("User not found")
     }
 
-    const myEvents = await MyEvent.find({user_id: user_id}).populate("event_id")
+    const myEvents = await MyEvent.find({user: user_id}).populate("event")
     return myEvents
 }
 
@@ -39,9 +39,9 @@ const getUpcomingEvent = async (user_id) => {
     if (!user){
         throw new Error("User not found")
     }
-    const myEvents = await MyEvent.find({user_id: user_id}).populate("event_id")
+    const myEvents = await MyEvent.find({user: user_id}).populate("event")
 
-    const myUpcomingEvents = await myEvents.filter(element => element.event_id.started_date > Date.now())
+    const myUpcomingEvents = await myEvents.filter(element => element.events.started_date > Date.now())
 
     return myUpcomingEvents
 }
@@ -52,9 +52,9 @@ const getLastEvent = async (user_id) => {
     if (!user){
         throw new Error("User not found")
     }
-    const myEvents = await MyEvent.find({user_id: user_id}).populate("event_id")
+    const myEvents = await MyEvent.find({user: user_id}).populate("event")
 
-    const myLastEvents = await myEvents.filter(element => element.event_id.started_date < Date.now())
+    const myLastEvents = await myEvents.filter(element => element.event.started_date < Date.now())
 
     return myLastEvents
 }

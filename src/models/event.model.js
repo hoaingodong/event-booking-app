@@ -6,7 +6,7 @@ const eventSchema = mongoose.Schema({
     price: Number,
     image: Object,
     introduction: String,
-    user_id: {
+    organizer: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },

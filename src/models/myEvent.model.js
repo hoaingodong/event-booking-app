@@ -2,11 +2,11 @@ const mongoose = require("mongoose")
 const uniqueValidator = require("mongoose-unique-validator")
 
 const myEventSchema = mongoose.Schema({
-    user_id: {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },
-    event_id: {
+    event: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Event"
     }

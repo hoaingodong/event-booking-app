@@ -15,10 +15,9 @@ const createNew = async (request, response, next) => {
 
 const getAll = async (request, response, next) => {
 
-    const user_id = request.body.user_id
-
+    const id = request.params.id
     try {
-        const myEvents = await myEventService.getAll(user_id)
+        const myEvents = await myEventService.getAll(id)
         response.status(200).json(myEvents)
     } catch (exception) {
         next(exception)
@@ -27,10 +26,10 @@ const getAll = async (request, response, next) => {
 
 const getUpcomingEvent = async (request, response, next) => {
 
-    const user_id = request.body.user_id
+    const id = request.params.id
 
     try {
-        const myUpcomingEvents = await myEventService.getUpcomingEvent(user_id)
+        const myUpcomingEvents = await myEventService.getUpcomingEvent(id)
         response.status(200).json(myUpcomingEvents)
     } catch (exception) {
         next(exception)
@@ -39,10 +38,10 @@ const getUpcomingEvent = async (request, response, next) => {
 
 const getLastEvent = async (request, response, next) => {
 
-    const user_id = request.body.user_id
+    const id = request.params.id
 
     try {
-        const myLastEvents = await myEventService.getLastEvent(user_id)
+        const myLastEvents = await myEventService.getLastEvent(id)
         response.status(200).json(myLastEvents)
     } catch (exception) {
         next(exception)
