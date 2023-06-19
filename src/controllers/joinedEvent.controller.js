@@ -1,4 +1,4 @@
-const myEventService = require("../services/myEvent.service")
+const myEventService = require("../services/joinedEvent.service")
 
 const createNew = async (request, response, next) => {
 
@@ -13,11 +13,11 @@ const createNew = async (request, response, next) => {
     }
 }
 
-const getAll = async (request, response, next) => {
+const getAllEvents = async (request, response, next) => {
 
     const id = request.params.id
     try {
-        const myEvents = await myEventService.getAll(id)
+        const myEvents = await myEventService.getAllEvents(id)
         response.status(200).json(myEvents)
     } catch (exception) {
         next(exception)
@@ -48,6 +48,17 @@ const getLastEvent = async (request, response, next) => {
     }
 }
 
+const getAllUsers = async (request, response, next) => {
+
+    const id = request.params.id
+    try {
+        const users = await myEventService.getAllUsers(id)
+        response.status(200).json(users)
+    } catch (exception) {
+        next(exception)
+    }
+}
+
 module.exports = {
-    createNew, getAll, getUpcomingEvent, getLastEvent
+    createNew, getAllEvents, getUpcomingEvent, getLastEvent, getAllUsers
 }
