@@ -59,7 +59,7 @@ const profileAbout = async (id) => {
 
 const profileReviews = async (id) => {
 
-    const reviews = await Review.find({user_id: id}).populate("to_user")
+    const reviews = await Review.find({user_id: id}).populate("user_id")
     return reviews
 }
 
