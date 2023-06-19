@@ -10,12 +10,12 @@ const filterSchema= Joi.object().keys({
     minDate: Joi.date().greater(now()),
     maxDate: Joi.date().greater(now()),
     longitude: [
-        Joi.number().required(),
-        Joi.number().required()
+        Joi.number(),
+        Joi.string()
     ],
     latitude: [
-        Joi.number().required(),
-        Joi.number().required()
+        Joi.number(),
+        Joi.string()
     ]
 })
 
