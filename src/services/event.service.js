@@ -1,4 +1,6 @@
 const Event = require("../models/event.model")
+const imageService = require("./image.service");
+const cloudinary = require("cloudinary");
 
 const getAll = async () => {
     const events = await Event.find({})
@@ -67,20 +69,59 @@ const search = async (body) => {
     return events
 }
 
-const deleteOne = async(id) => {
+const deleteOne = async (id) => {
 
     const event = await Event.findByIdAndDelete(id)
 
     return event
 }
 
-const createNew = async(event) => {
+const createNew = async (event) => {
 
     const savedEvent = await Event.create({ ...event})
 
     return savedEvent
 }
 
+const update = async (id, body) => {
+
+    const event = {
+        title: body.title,
+        topics: body.topics,
+        price: body.price,
+        introduction: body.introduction,
+        started_date: body.started_date,
+        ended_date: body.ended_date,
+    }
+
+    const savedEvent = await Event.findByIdAndUpdate(id, {...event})
+    console.log(event)
+
+    return savedEvent
+}
+
+const uploadImage = async (event, file) => {
+
+    const image = await imageService.createImage(file)
+
+    event.image = image
+
+    event.save()
+
+    return event
+}
+
+const deleteImage = async (image, event) => {
+
+    await cloudinary.uploader
+        .destroy(image.id)
+
+    event.image = null
+    event.save()
+
+    return event
+}
+
 module.exports = {
-    getAll, getDetail, filter, filterLocation, search, deleteOne, createNew
+    getAll, getDetail, filter, filterLocation, search, deleteOne, createNew, update, uploadImage, deleteImage
 }

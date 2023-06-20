@@ -94,37 +94,87 @@ const deleteOne = async (request, response, next) => {
 const createNew = async (request, response, next) => {
    const body = request.body
    try {
+      const file = request.files[0]
+      const image = await imageService.createImage(file)
+
+      const event = {
+         title: body.title,
+         topics: body.topics,
+         price: body.price,
+         introduction: body.introduction,
+         image: image,
+         started_date: body.started_date,
+         ended_date: body.ended_date,
+         organizer: body.user_id
+      }
+
+      const user = await User.findById(body.user_id)
+      if (!user) {
+         response.status(401).json({error: "Invalid user"})
+      }
+
+      try {
+         const savedEvent = await eventService.createNew(event)
+         response.status(201).json(savedEvent)
+      } catch (exception) {
+         next(exception)
+      }
+   } catch (exception) {
+      next(exception)
+   }
+}
+
+const update  = async (request, response, next) => {
+
+      const id = request.params.id
+      const body = request.body
+
+      try {
+         const savedEvent = await eventService.update(id, body)
+         response.status(200).json(savedEvent)
+      }
+      catch(exception) {
+         next(exception)
+      }
+}
+
+const uploadImage = async (request, response, next) => {
+
+   const id = request.params.id
+   const event = await eventService.getDetail(id)
+
+   if (event.image){
+      response.status(400).json({error: "Image have already exists"})
+   }
+
    const file = request.files[0]
-   const image = await imageService.createImage(file)
-
-   const event = {
-      title: body.title,
-      topics: body.topics,
-      price: body.price,
-      introduction: body.introduction,
-      image: image,
-      started_date: body.started_date,
-      ended_date: body.ended_date,
-      organizer: body.user_id
-   }
-
-   const user = await User.findById(body.user_id)
-   if (!user) {
-      response.status(401).json({error: "Invalid user"})
-   }
 
    try {
-      const savedEvent = await eventService.createNew(event)
-      response.status(201).json(savedEvent)
-   }
-   catch(exception) {
-      next(exception)
-   }}
-   catch(exception) {
+      const savedEvent = await eventService.uploadImage(event, file)
+      response.status(200).json(savedEvent)
+   } catch (exception) {
       next(exception)
    }
+}
+
+const deleteImage = async (request, response, next) => {
+
+   const id = request.params.id
+   const event = await eventService.getDetail(id)
+
+   const image =  event.image
+
+   if (!image){
+      response.status(404).json({error: "Image not found"})
    }
+   try {
+      const savedEvent = await eventService.deleteImage(image, event)
+      response.status(200).json(savedEvent)
+   } catch (exception) {
+      next(exception)
+   }
+}
 
 module.exports = {
-   getAll, getDetail, filter, filterLocation, search, deleteOne, createNew
+   getAll, getDetail, filter, filterLocation, search, deleteOne, createNew, update, uploadImage, deleteImage
 }

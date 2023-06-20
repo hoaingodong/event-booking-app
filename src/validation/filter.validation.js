@@ -7,7 +7,6 @@ const filterSchema= Joi.object().keys({
     address: Joi.string(),
     minPrice: Joi.number(),
     maxPrice: Joi.number(),
-    minDate: Joi.date().greater(now()),
     maxDate: Joi.date().greater(now()),
     longitude: [
         Joi.number(),
