@@ -76,7 +76,7 @@ const forgotPassword = async (email) => {
 
     const otp = generateOTP()
     await emailService.sendEmail(user.email, otp)
-    myCache.set(`OTP${user.id}`, otp, 300);
+    myCache.set(`OTP${user.id}`, otp, 20);
     return user
 }
 
