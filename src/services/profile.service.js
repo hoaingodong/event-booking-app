@@ -4,12 +4,8 @@ const cloudinary = require("cloudinary")
 const Event = require("../models/event.model");
 const Review = require("../models/review.model");
 
-const uploadAvatar = async (user_id, file) => {
+const uploadAvatar = async (user, file) => {
 
-    let user = await User.findById(user_id)
-    if (!user){
-        throw new Error("User not found")
-    }
     const avatar = await imageService.createImage(file)
 
     user.avatar = avatar
@@ -19,17 +15,10 @@ const uploadAvatar = async (user_id, file) => {
     return user
 }
 
-const deleteAvatar = async (user_id) => {
-
-    let user = await User.findById(user_id)
-    if (!user){
-        throw new Error("User not found")
-    }
-
-    const idCloudinary = user.avatar.id
+const deleteAvatar = async (avatar, user) => {
 
     const result = await cloudinary.uploader
-        .destroy(idCloudinary)
+        .destroy(avatar.id)
 
     if (result.result == "not found")
         {

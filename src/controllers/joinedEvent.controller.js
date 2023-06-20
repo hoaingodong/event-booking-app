@@ -2,7 +2,7 @@ const myEventService = require("../services/joinedEvent.service")
 
 const createNew = async (request, response, next) => {
 
-    const user_id = request.body.user_id
+    const user_id = request.user.id
     const event_id = request.body.event_id
 
     try {
@@ -15,7 +15,7 @@ const createNew = async (request, response, next) => {
 
 const getAllEvents = async (request, response, next) => {
 
-    const id = request.params.id
+    const id = request.user.id
     try {
         const myEvents = await myEventService.getAllEvents(id)
         response.status(200).json(myEvents)
@@ -26,7 +26,7 @@ const getAllEvents = async (request, response, next) => {
 
 const getUpcomingEvent = async (request, response, next) => {
 
-    const id = request.params.id
+    const id = request.user.id
 
     try {
         const myUpcomingEvents = await myEventService.getUpcomingEvent(id)
@@ -38,7 +38,7 @@ const getUpcomingEvent = async (request, response, next) => {
 
 const getLastEvent = async (request, response, next) => {
 
-    const id = request.params.id
+    const id = request.user.id
 
     try {
         const myLastEvents = await myEventService.getLastEvent(id)
