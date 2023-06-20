@@ -15,14 +15,17 @@ const profileSchema = require("../validation/profile.validation")
 const {celebrate, Segments} = require("celebrate");
 const middleware =  require("../utils/middleware")
 
+//auth
 router.post("/register", celebrate({[Segments.BODY]:userSchema}), userController.createNew)
 router.post("/verify-otp", celebrate({[Segments.BODY]:otpSchema}), userController.verifyOTP)
 router.post("/login", celebrate({[Segments.BODY]:loginSchema}), userController.login)
-router.post("/forgot-password", celebrate({[Segments.BODY]: {email: Joi.string().email().required()}}), userController.forgotPassword)
+router.post("/send-otp", celebrate({[Segments.BODY]: {email: Joi.string().email().required()}}), userController.forgotPassword)
 router.post("/reset-password", middleware.tokenValidator, middleware.userExtractor, celebrate({[Segments.BODY]:resetSchema}), userController.resetPassword)
 router.get("/", userController.getAll)
-//get lists friends
+
 router.use(middleware.tokenValidator, middleware.userExtractor)
+
+//get lists friends
 router.get("/friends", notificationController.getFriendsList)
 //join events
 router.post("/join-event", celebrate({[Segments.BODY]:joinEventSchema}), joinedEventController.createNew)

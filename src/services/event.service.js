@@ -6,7 +6,7 @@ const getAll = async () => {
 }
 
 const getDetail = async (id) => {
-    const event = await Event.findById(id)
+    const event = await Event.findById(id).populate("organizer")
     return event
 }
 
@@ -67,6 +67,20 @@ const search = async (body) => {
     return events
 }
 
+const deleteOne = async(id) => {
+
+    const event = await Event.findByIdAndDelete(id)
+
+    return event
+}
+
+const createNew = async(event) => {
+
+    const savedEvent = await Event.create({ ...event})
+
+    return savedEvent
+}
+
 module.exports = {
-    getAll, getDetail, filter, filterLocation, search
+    getAll, getDetail, filter, filterLocation, search, deleteOne, createNew
 }
