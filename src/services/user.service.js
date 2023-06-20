@@ -8,7 +8,7 @@ const createNew = async (user) => {
     const savedUser = await User.create({...user})
     const otp = generateOTP()
     await emailService.sendEmail(savedUser.email, otp)
-    myCache.set(`OTP${savedUser.id}`, otp, 20);
+    myCache.set(`OTP${savedUser.id}`, otp, 300);
     return savedUser
 }
 
