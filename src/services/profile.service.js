@@ -55,14 +55,11 @@ const editProfile = async (id, body) => {
 
     const profile = {
         interests: body.interests,
-        bio: body.bio
+        bio: body.bio,
+        name: body.name
     }
 
-    console.log(profile.interests)
-
     const savedProfile = await User.findByIdAndUpdate(id, profile)
-
-    console.log(savedProfile)
 
     return savedProfile
 }

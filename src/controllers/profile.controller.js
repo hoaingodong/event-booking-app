@@ -84,8 +84,8 @@ const editProfile = async (request, response, next) => {
     const body =  request.body
 
     try {
-        const reviews = await profileService.editProfile(id, body)
-        response.status(200).json(reviews)
+        const savedUser = await profileService.editProfile(id, body)
+        response.status(200).json(savedUser)
     } catch (exception) {
         next(exception)
     }
