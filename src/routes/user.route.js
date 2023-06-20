@@ -23,7 +23,7 @@ router.post("/reset-password", celebrate({[Segments.BODY]:resetSchema}), userCon
 router.get("/", userController.getAll)
 //get lists friends
 router.use(middleware.tokenValidator, middleware.userExtractor)
-router.get("/friends/:id", notificationController.getFriendsList)
+router.get("/friends", notificationController.getFriendsList)
 //join events
 router.post("/join-event", celebrate({[Segments.BODY]:joinEventSchema}), joinedEventController.createNew)
 router.get("/events", joinedEventController.getAllEvents)
