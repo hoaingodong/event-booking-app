@@ -2,29 +2,15 @@ const profileService = require("../services/profile.service")
 const uploadAvatar = async (request, response, next) => {
 
     const user = request.user
+
+    if (user.avatar){
+        response.status(400).json({error: "Avatar have already exists"})
+    }
+
     const file = request.files[0]
 
     try {
         const savedUser = await profileService.uploadAvatar(user, file)
-        response.status(200).json(savedUser)
-    } catch (exception) {
-        next(exception)
-    }
-}
-
-const editAvatar = async (request, response, next) => {
-
-    const user = request.user
-    const avatar =  request.user.avatar
-    if (!avatar){
-        response.status(404).json({error: "Avatar not found"})
-    }
-    const file = request.files[0]
-
-    let savedUser;
-    try {
-        savedUser = await profileService.deleteAvatar(avatar, user)
-        savedUser = await profileService.uploadAvatar(user, file)
         response.status(200).json(savedUser)
     } catch (exception) {
         next(exception)
@@ -92,5 +78,5 @@ const editProfile = async (request, response, next) => {
 }
 
 module.exports = {
-  uploadAvatar, editAvatar, deleteAvatar, profileEvent, profileAbout, profileReviews, editProfile
+  uploadAvatar, deleteAvatar, profileEvent, profileAbout, profileReviews, editProfile
 }
