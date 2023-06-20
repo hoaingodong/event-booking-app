@@ -26,6 +26,7 @@ const verifyOTP = async (otp, email) => {
 
     //check OTP
     const result = otp ==  await myCache.get(`OTP${user.id}`)
+
     if (result == false){
         throw new Error("Wrong OTP or OTP was expired")
     }
@@ -34,7 +35,9 @@ const verifyOTP = async (otp, email) => {
     user.verified = true
     user.save()
 
-    return user
+    const token = await user.getJwtToken()
+
+    return {user, token}
 }
 
 const login = async (email, password) => {
@@ -66,7 +69,7 @@ const generateOTP = () => {
     return OTP;
 }
 
-const sendEmailResetPassword = async (email) => {
+const forgotPassword = async (email) => {
     const user = await User.findOne({email})
     user.verified = false
     await user.save()
@@ -77,8 +80,7 @@ const sendEmailResetPassword = async (email) => {
     return user
 }
 
-const resetPassword = async (email, password) => {
-    const user = await User.findOne({email})
+const resetPassword = async (user, password) => {
 
     if (user.verified == false){
         throw new Error("Your account has not been activated")
@@ -106,7 +108,7 @@ module.exports = {
     createNew,
     verifyOTP,
     login,
-    sendEmailResetPassword,
+    forgotPassword,
     resetPassword,
     getAll
 }

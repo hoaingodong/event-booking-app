@@ -27,8 +27,8 @@ const createNew = async (request, response, next) => {
 const verifyOTP = async (request, response, next) =>{
     const body = request.body
     try {
-        const user = await userService.verifyOTP(body.otp, body.email)
-        response.status(200).json(user)
+        const result  = await userService.verifyOTP(body.otp, body.email)
+        response.status(200).json({token: result.token})
     } catch (exception) {
         next(exception)
     }
@@ -44,10 +44,10 @@ const login = async(request, response, next) =>{
     }
 }
 
-const sendEmailResetPassword = async (request, response, next) => {
+const forgotPassword = async (request, response, next) => {
     const body = request.body
     try {
-        const user = await userService.sendEmailResetPassword(body.email)
+        const user = await userService.forgotPassword(body.email)
         response.status(200).json(user)
     } catch (exception) {
         next(exception)
@@ -56,9 +56,11 @@ const sendEmailResetPassword = async (request, response, next) => {
 
 const resetPassword = async (request, response, next) => {
     const body = request.body
+    const user = request.user
+
     try {
-        const user = await userService.resetPassword(body.email, body.password)
-        response.status(200).json(user)
+        const savedUser = await userService.resetPassword(user, body.password)
+        response.status(200).json(savedUser)
     } catch (exception) {
         next(exception)
     }
@@ -74,5 +76,5 @@ const getAll = async (request, response, next) => {
 }
 
 module.exports = {
-    createNew, verifyOTP, login, sendEmailResetPassword, resetPassword, getAll
+    createNew, verifyOTP, login, forgotPassword, resetPassword, getAll
 }
