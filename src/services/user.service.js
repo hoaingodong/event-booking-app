@@ -16,12 +16,12 @@ const verifyOTP = async (otp, email) => {
     // find email was register or not
     const user = await User.findOne({email})
 
-    if (user.verified == true){
-        throw new Error("Account already activated")
-    }
-
     if (!user){
         throw new Error("You haven't registered with this email")
+    }
+
+    if (user.verified == true){
+        throw new Error("Account already activated")
     }
 
     //check OTP
