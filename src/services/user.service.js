@@ -71,6 +71,11 @@ const generateOTP = () => {
 
 const forgotPassword = async (email) => {
     const user = await User.findOne({email})
+
+    if (!user){
+        throw new Error("You haven't registered with this email")
+    }
+
     user.verified = false
     await user.save()
 
