@@ -7,7 +7,16 @@ const eventSchema = Joi.object().keys({
     introduction: Joi.string().required(),
     started_date: Joi.date().required(),
     ended_date:Joi.date().required(),
-    user_id: Joi.string()
+    user_id: Joi.string(),
+    longitude: [
+        Joi.number().required(),
+        Joi.string().required()
+    ],
+    latitude: [
+        Joi.number().required(),
+        Joi.string().required()
+    ],
+    address: Joi.string().required()
 })
 
 module.exports = eventSchema

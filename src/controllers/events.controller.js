@@ -96,6 +96,12 @@ const createNew = async (request, response, next) => {
    try {
       const file = request.files[0]
       const image = await imageService.createImage(file)
+      const coordinates = []
+      coordinates.push(body.longitude)
+      coordinates.push(body.latitude)
+      const location = {
+         coordinates: coordinates
+      }
 
       const event = {
          title: body.title,
@@ -105,7 +111,9 @@ const createNew = async (request, response, next) => {
          image: image,
          started_date: body.started_date,
          ended_date: body.ended_date,
-         organizer: body.user_id
+         organizer: body.user_id,
+         address: body.address,
+         location: location
       }
 
       const user = await User.findById(body.user_id)
@@ -114,7 +122,7 @@ const createNew = async (request, response, next) => {
       }
 
       try {
-         const savedEvent = await eventService.createNew(event)
+         const savedEvent = await eventService.createNew(event, coordinates)
          response.status(201).json(savedEvent)
       } catch (exception) {
          next(exception)

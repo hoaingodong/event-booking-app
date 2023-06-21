@@ -76,7 +76,7 @@ const deleteOne = async (id) => {
     return event
 }
 
-const createNew = async (event) => {
+const createNew = async (event, coordinates) => {
 
     const savedEvent = await Event.create({ ...event})
 
@@ -85,6 +85,13 @@ const createNew = async (event) => {
 
 const update = async (id, body) => {
 
+    const coordinates = []
+    coordinates.push(body.longitude)
+    coordinates.push(body.latitude)
+    const location = {
+        type: "Point",
+        coordinates: coordinates
+    }
     const event = {
         title: body.title,
         topics: body.topics,
@@ -92,6 +99,8 @@ const update = async (id, body) => {
         introduction: body.introduction,
         started_date: body.started_date,
         ended_date: body.ended_date,
+        address: body.address,
+        location: location
     }
 
     const savedEvent = await Event.findByIdAndUpdate(id, {...event})

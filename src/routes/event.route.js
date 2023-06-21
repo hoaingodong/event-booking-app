@@ -16,7 +16,7 @@ router.get("/:id", eventController.getDetail)
 router.use(middleware.tokenValidator)
 router.delete("/:id", eventController.deleteOne)
 router.post("/", upload.upload.any(), celebrate({[Segments.BODY]:eventSchema}), eventController.createNew)
-router.put("/:id", celebrate({[Segments.QUERY]:eventSchema}), eventController.update)
+router.put("/:id", upload.upload.any(), celebrate({[Segments.BODY]:eventSchema}), eventController.update)
 router.post("/image/:id", upload.upload.any(), eventController.uploadImage)
 router.delete("/image/:id", eventController.deleteImage)
 
