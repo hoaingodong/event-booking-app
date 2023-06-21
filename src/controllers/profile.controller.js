@@ -33,7 +33,7 @@ const deleteAvatar = async (request, response, next) => {
 }
 
 const profileEvent = async (request, response, next) => {
-    const id = request.user.id
+    const id = request.params.id
 
     try {
         const events = await profileService.profileEvent(id)
@@ -44,7 +44,7 @@ const profileEvent = async (request, response, next) => {
 }
 
 const profileAbout = async (request, response, next) => {
-    const id = request.user.id
+    const id = request.params.id
 
     try {
         const detailedUser = await profileService.profileAbout(id)
@@ -55,7 +55,7 @@ const profileAbout = async (request, response, next) => {
 }
 
 const profileReviews = async (request, response, next) => {
-    const id = request.user.id
+    const id = request.params.id
 
     try {
         const reviews = await profileService.profileReviews(id)

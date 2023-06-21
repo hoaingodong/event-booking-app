@@ -33,6 +33,11 @@ const deleteAvatar = async (avatar, user) => {
 
 const profileEvent = async (id) => {
 
+    const user = await User.findById(id)
+    if (!user){
+        throw new Error("User not found")
+    }
+
     const events = await Event.find({user_id: id}).populate("user_id")
 
     return events
@@ -42,10 +47,20 @@ const profileEvent = async (id) => {
 const profileAbout = async (id) => {
 
     const detailedUser = await User.findById(id)
+
+    if (!detailedUser){
+        throw new Error("User not found")
+    }
+
     return detailedUser
 }
 
 const profileReviews = async (id) => {
+
+    const user = await User.findById(id)
+    if (!user){
+        throw new Error("User not found")
+    }
 
     const reviews = await Review.find({user_id: id}).populate("to_user").populate("from_user")
     return reviews

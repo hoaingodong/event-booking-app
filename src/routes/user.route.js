@@ -22,6 +22,10 @@ router.post("/login", celebrate({[Segments.BODY]:loginSchema}), userController.l
 router.post("/send-otp", celebrate({[Segments.BODY]: {email: Joi.string().email().required()}}), userController.forgotPassword)
 router.post("/reset-password", middleware.tokenValidator, middleware.userExtractor, celebrate({[Segments.BODY]:resetSchema}), userController.resetPassword)
 router.get("/", userController.getAll)
+//organizer profile
+router.get("/profile/events/:id", profileController.profileEvent)
+router.get("/profile/about/:id", profileController.profileAbout)
+router.get("/profile/reviews/:id", profileController.profileReviews)
 
 router.use(middleware.tokenValidator, middleware.userExtractor)
 
@@ -32,12 +36,9 @@ router.post("/join-event", celebrate({[Segments.BODY]:joinEventSchema}), joinedE
 router.get("/events", joinedEventController.getAllEvents)
 router.get("/upcoming-events", joinedEventController.getUpcomingEvent)
 router.get("/last-events", joinedEventController.getLastEvent)
-//profile
+//my-profile
 router.post("/avatar", upload.upload.any(), profileController.uploadAvatar)
 router.delete("/avatar", profileController.deleteAvatar)
-router.get("/profile/event", profileController.profileEvent)
-router.get("/profile/about", profileController.profileAbout)
-router.get("/profile/reviews", profileController.profileReviews)
 router.put("/", celebrate({[Segments.BODY]:profileSchema}), profileController.editProfile)
 
 module.exports = router
