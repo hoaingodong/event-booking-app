@@ -37,7 +37,7 @@ const verifyOTP = async (request, response, next) =>{
 const login = async(request, response, next) =>{
     const body = request.body
     try {
-        const user = await userService.login(body.email, body.password)
+        const user = await userService.login(body)
         response.status(200).json(user)
     } catch (exception) {
         next(exception)

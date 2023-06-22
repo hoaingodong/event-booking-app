@@ -5,7 +5,7 @@ const otpSchema = require("../validation/otp.validation")
 const loginSchema = require("../validation/login.validation")
 const Joi = require("joi");
 const resetSchema = require("../validation/resetPassword.validation")
-const notificationController = require("../controllers/inviteFriends.controller")
+const inviteFriendsController = require("../controllers/inviteFriends.controller")
 const joinedEventController = require("../controllers/joinedEvent.controller")
 const joinEventSchema = require("../validation/joinEvent.validation")
 const profileController = require("../controllers/profile.controller");
@@ -30,7 +30,8 @@ router.get("/profile/reviews/:id", profileController.profileReviews)
 router.use(middleware.tokenValidator, middleware.userExtractor)
 
 //get lists friends
-router.get("/friends", notificationController.getFriendsList)
+router.get("/friends", inviteFriendsController.getFriendsList)
+router.post("/invite-friends", inviteFriendsController.inviteFriends)
 //join events
 router.post("/join-event", celebrate({[Segments.BODY]:joinEventSchema}), joinedEventController.createNew)
 router.get("/events", joinedEventController.getAllEvents)

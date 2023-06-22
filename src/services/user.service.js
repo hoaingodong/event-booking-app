@@ -40,8 +40,8 @@ const verifyOTP = async (otp, email) => {
     return {user, token}
 }
 
-const login = async (email, password) => {
-    const user = await User.findOne({ email: email })
+const login = async (body) => {
+    const user = await User.findOne({ email: body.email })
 
     if (user.verified == false){
         throw new Error("Your account has not been activated")
@@ -49,13 +49,16 @@ const login = async (email, password) => {
 
     const passwordCorrect = user === null
         ? false
-        : await user.comparePassword(password)
+        : await user.comparePassword(body.password)
 
     if (!(user && passwordCorrect)) {
         throw new Error("Invalid username or password")
     }
 
     const token = await user.getJwtToken()
+
+    user.tokenDevice = body.tokenDevice
+    user.save()
 
     return {token, user}
 }
