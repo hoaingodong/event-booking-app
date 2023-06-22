@@ -28,7 +28,8 @@ const userSchema = mongoose.Schema({
     verified: {
         type: Boolean,
         default: false
-    }
+    },
+    tokenDevice: String
 })
 
 userSchema.plugin(uniqueValidator)
