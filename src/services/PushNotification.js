@@ -1,5 +1,5 @@
 const admin = require("firebase-admin");
-const configJsonFirebase = require('../config/service-account-file.json');
+const configJsonFirebase = require('service-account-file.json');
 const config = require("../utils/config")
 
 const defaultAppConfig = {
