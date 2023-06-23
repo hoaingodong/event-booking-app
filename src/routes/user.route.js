@@ -15,7 +15,7 @@ const profileSchema = require("../validation/profile.validation")
 const {celebrate, Segments} = require("celebrate");
 const middleware =  require("../utils/middleware")
 
-//auth
+//authentication
 router.post("/register", celebrate({[Segments.BODY]:userSchema}), userController.createNew)
 router.post("/verify-otp", celebrate({[Segments.BODY]:otpSchema}), userController.verifyOTP)
 router.post("/login", celebrate({[Segments.BODY]:loginSchema}), userController.login)
@@ -26,21 +26,18 @@ router.get("/", userController.getAll)
 router.get("/profile/events/:id", profileController.profileEvent)
 router.get("/profile/about/:id", profileController.profileAbout)
 router.get("/profile/reviews/:id", profileController.profileReviews)
-
-router.use(middleware.tokenValidator, middleware.userExtractor)
-
 //get lists friends
-router.get("/friends", inviteFriendsController.getFriendsList)
-router.post("/invite-friends", inviteFriendsController.inviteFriends)
+router.get("/friends", middleware.tokenValidator, middleware.userExtractor, inviteFriendsController.getFriendsList)
+router.post("/invite-friends", middleware.tokenValidator, middleware.userExtractor, inviteFriendsController.inviteFriends)
 //join events
-router.post("/join-event", celebrate({[Segments.BODY]:joinEventSchema}), joinedEventController.createNew)
-router.get("/events", joinedEventController.getAllEvents)
-router.get("/upcoming-events", joinedEventController.getUpcomingEvent)
-router.get("/last-events", joinedEventController.getLastEvent)
+router.post("/join-event", middleware.tokenValidator, middleware.userExtractor, celebrate({[Segments.BODY]:joinEventSchema}), joinedEventController.createNew)
+router.get("/events", middleware.tokenValidator, middleware.userExtractor, joinedEventController.getAllEvents)
+router.get("/upcoming-events", middleware.tokenValidator, middleware.userExtractor, joinedEventController.getUpcomingEvent)
+router.get("/last-events", middleware.tokenValidator, middleware.userExtractor, joinedEventController.getLastEvent)
 //my-profile
-router.post("/avatar", upload.upload.any(), profileController.uploadAvatar)
-router.delete("/avatar", profileController.deleteAvatar)
-router.put("/", celebrate({[Segments.BODY]:profileSchema}), profileController.editProfile)
+router.post("/avatar", middleware.tokenValidator, middleware.userExtractor, upload.upload.any(), profileController.uploadAvatar)
+router.delete("/avatar", middleware.tokenValidator, middleware.userExtractor, profileController.deleteAvatar)
+router.put("/", middleware.tokenValidator, middleware.userExtractor, celebrate({[Segments.BODY]:profileSchema}), profileController.editProfile)
 
 module.exports = router
 

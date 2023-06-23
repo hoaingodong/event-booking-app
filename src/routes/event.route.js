@@ -13,12 +13,11 @@ router.get("/", celebrate({[Segments.QUERY]:filterSchema}), eventController.filt
 router.get("/nearby", celebrate({[Segments.QUERY]:locationSchema}),  eventController.filterLocation)
 router.get("/search", celebrate({[Segments.QUERY]: {keyword: Joi.string()}}), eventController.search)
 router.get("/:id", eventController.getDetail)
-router.use(middleware.tokenValidator)
-router.delete("/:id", eventController.deleteOne)
-router.post("/", upload.upload.any(), celebrate({[Segments.BODY]:eventSchema}), eventController.createNew)
-router.put("/:id", upload.upload.any(), celebrate({[Segments.BODY]:eventSchema}), eventController.update)
-router.post("/image/:id", upload.upload.any(), eventController.uploadImage)
-router.delete("/image/:id", eventController.deleteImage)
+router.delete("/:id", middleware.tokenValidator, eventController.deleteOne)
+router.post("/", middleware.tokenValidator, upload.upload.any(), celebrate({[Segments.BODY]:eventSchema}), eventController.createNew)
+router.put("/:id", middleware.tokenValidator, upload.upload.any(), celebrate({[Segments.BODY]:eventSchema}), eventController.update)
+router.post("/image/:id", middleware.tokenValidator, upload.upload.any(), eventController.uploadImage)
+router.delete("/image/:id", middleware.tokenValidator, eventController.deleteImage)
 
 module.exports = router
 
