@@ -38,7 +38,7 @@ const profileEvent = async (id) => {
         throw new Error("User not found")
     }
 
-    const events = await Event.find({user_id: id}).populate("user_id")
+    const events = await Event.find({organizer: id})
 
     return events
 
@@ -62,7 +62,7 @@ const profileReviews = async (id) => {
         throw new Error("User not found")
     }
 
-    const reviews = await Review.find({user_id: id}).populate("to_user").populate("from_user")
+    const reviews = await Review.find({to_user: id}).populate("from_user").populate("to_user")
     return reviews
 }
 
