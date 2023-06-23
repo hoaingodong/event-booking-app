@@ -5,7 +5,6 @@ const mongoose = require("mongoose")
 const cors = require("cors")
 const middleware = require("./utils/middleware")
 const logger = require("./utils/logger")
-const {json} = require("express");
 const {errors} = require("celebrate")
 const bodyParser = require("body-parser")
 const v1Router = require("./routes/index.route")
