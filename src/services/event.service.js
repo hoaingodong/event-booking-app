@@ -13,7 +13,9 @@ const getDetail = async (id) => {
 }
 
 const filter = async (body) => {
-    let events = await Event.find({})
+    let events = await Event.find({started_date : { $gt: Date.now()}})
+
+    events.sort((a,b) => new Date(a.started_date).getTime() - new Date(b.started_date).getTime());
 
     if (body.longitude && body.latitude){
         events = await filterLocation(body.longitude, body.latitude)
