@@ -21,12 +21,10 @@ mongoose.connect(config.MONGODB_URI)
         logger.error("error connecting to MongoDB:", error.message)
     })
 
-// app.use(express.json())
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true  }))
 app.use(middleware.requestLogger)
-// app.use(middleware.tokenExtractor)
 
 app.use("/api/v1", v1Router)
 app.use(errors())
