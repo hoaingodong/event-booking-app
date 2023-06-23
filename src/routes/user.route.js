@@ -14,6 +14,7 @@ const upload = require("../config/multer.config")
 const profileSchema = require("../validation/profile.validation")
 const {celebrate, Segments} = require("celebrate");
 const middleware =  require("../utils/middleware")
+const {expressjwt: jwt} = require("express-jwt");
 
 //authentication
 router.post("/register", celebrate({[Segments.BODY]:userSchema}), userController.createNew)
@@ -27,17 +28,17 @@ router.get("/profile/events/:id", profileController.profileEvent)
 router.get("/profile/about/:id", profileController.profileAbout)
 router.get("/profile/reviews/:id", profileController.profileReviews)
 //get lists friends
-router.get("/friends", middleware.tokenValidator, middleware.userExtractor, inviteFriendsController.getFriendsList)
-router.post("/invite-friends", middleware.tokenValidator, middleware.userExtractor, inviteFriendsController.inviteFriends)
+router.get("/friends", jwt({ secret: "hoaingodong", algorithms: ["HS256"], requestProperty: "user" }), inviteFriendsController.getFriendsList)
+router.post("/invite-friends", jwt({ secret: "hoaingodong", algorithms: ["HS256"], requestProperty: "user" }), inviteFriendsController.inviteFriends)
 //join events
-router.post("/join-event", middleware.tokenValidator, middleware.userExtractor, celebrate({[Segments.BODY]:joinEventSchema}), joinedEventController.createNew)
-router.get("/events", middleware.tokenValidator, middleware.userExtractor, joinedEventController.getAllEvents)
-router.get("/upcoming-events", middleware.tokenValidator, middleware.userExtractor, joinedEventController.getUpcomingEvent)
-router.get("/last-events", middleware.tokenValidator, middleware.userExtractor, joinedEventController.getLastEvent)
+router.post("/join-event", jwt({ secret: "hoaingodong", algorithms: ["HS256"], requestProperty: "user" }), celebrate({[Segments.BODY]:joinEventSchema}), joinedEventController.createNew)
+router.get("/events", jwt({ secret: "hoaingodong", algorithms: ["HS256"], requestProperty: "user" }), joinedEventController.getAllEvents)
+router.get("/upcoming-events", jwt({ secret: "hoaingodong", algorithms: ["HS256"], requestProperty: "user" }), joinedEventController.getUpcomingEvent)
+router.get("/last-events", jwt({ secret: "hoaingodong", algorithms: ["HS256"], requestProperty: "user" }), joinedEventController.getLastEvent)
 //my-profile
-router.post("/avatar", middleware.tokenValidator, middleware.userExtractor, upload.upload.any(), profileController.uploadAvatar)
-router.delete("/avatar", middleware.tokenValidator, middleware.userExtractor, profileController.deleteAvatar)
-router.put("/", middleware.tokenValidator, middleware.userExtractor, celebrate({[Segments.BODY]:profileSchema}), profileController.editProfile)
+router.post("/avatar", jwt({ secret: "hoaingodong", algorithms: ["HS256"], requestProperty: "user" }), upload.upload.any(), profileController.uploadAvatar)
+router.delete("/avatar", jwt({ secret: "hoaingodong", algorithms: ["HS256"], requestProperty: "user" }), profileController.deleteAvatar)
+router.put("/", jwt({ secret: "hoaingodong", algorithms: ["HS256"], requestProperty: "user" }), celebrate({[Segments.BODY]:profileSchema}), profileController.editProfile)
 
 module.exports = router
 

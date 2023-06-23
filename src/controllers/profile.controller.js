@@ -1,7 +1,13 @@
 const profileService = require("../services/profile.service")
+const User = require("../models/user.model")
+
 const uploadAvatar = async (request, response, next) => {
 
-    const user = request.user
+    const id = request.user.id
+    const user = await User.findById(id)
+    if (!user) {
+        response.status(404).json("User not found")
+    }
 
     if (user.avatar){
         response.status(400).json({error: "Avatar have already exists"})
@@ -19,8 +25,13 @@ const uploadAvatar = async (request, response, next) => {
 
 const deleteAvatar = async (request, response, next) => {
 
-    const user = request.user
-    const avatar =  request.user.avatar
+    const id = request.user.id
+    const user = await User.findById(id)
+    if (!user) {
+        response.status(404).json("User not found")
+    }
+
+    const avatar =  user.avatar
     if (!avatar){
         response.status(404).json({error: "Avatar not found"})
     }

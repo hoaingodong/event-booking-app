@@ -15,7 +15,13 @@ const getFriendsList = async (request, response, next) => {
 
 const inviteFriends = async (request, response, next) => {
 
-    const fromUser = request.user
+    const id = request.user.id
+    const fromUser = await User.findById(id)
+    if (!fromUser) {
+        response.status(404).json("User not found")
+    }
+
+
     const eventId = request.body.eventId
     const friends = request.body.friends
 
