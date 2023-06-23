@@ -7,7 +7,6 @@ const Joi = require("joi");
 const locationSchema = require('../validation/location.validation')
 const upload = require("../config/multer.config")
 const eventSchema = require("../validation/event.validation")
-const middleware = require("../utils/middleware");
 var { expressjwt: jwt } = require("express-jwt");
 
 router.get("/", celebrate({[Segments.QUERY]:filterSchema}), eventController.filter)

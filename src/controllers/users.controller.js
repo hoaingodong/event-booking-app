@@ -1,6 +1,6 @@
 const userService = require("../services/user.service")
 const bcrypt = require("bcryptjs")
-const {request, response} = require("express");
+const User = require("../models/user.model");
 
 const createNew = async (request, response, next) => {
 
@@ -56,7 +56,11 @@ const forgotPassword = async (request, response, next) => {
 
 const resetPassword = async (request, response, next) => {
     const body = request.body
-    const user = request.user
+    const id = request.user.id
+    const user = await User.findById(id)
+    if (!user) {
+        response.status(404).json("User not found")
+    }
 
     try {
         const savedUser = await userService.resetPassword(user, body.password)
