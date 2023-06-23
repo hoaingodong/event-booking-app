@@ -3,25 +3,24 @@ const userController = require("../controllers/users.controller")
 const userSchema = require("../validation/user.validation")
 const otpSchema = require("../validation/otp.validation")
 const loginSchema = require("../validation/login.validation")
-const Joi = require("joi");
+const Joi = require("joi")
 const resetSchema = require("../validation/resetPassword.validation")
 const inviteFriendsController = require("../controllers/inviteFriends.controller")
 const joinedEventController = require("../controllers/joinedEvent.controller")
 const joinEventSchema = require("../validation/joinEvent.validation")
-const profileController = require("../controllers/profile.controller");
+const profileController = require("../controllers/profile.controller")
 const router = express.Router()
 const upload = require("../config/multer.config")
 const profileSchema = require("../validation/profile.validation")
-const {celebrate, Segments} = require("celebrate");
-const middleware =  require("../utils/middleware")
-const {expressjwt: jwt} = require("express-jwt");
+const {celebrate, Segments} = require("celebrate")
+const {expressjwt: jwt} = require("express-jwt")
 
 //authentication
 router.post("/register", celebrate({[Segments.BODY]:userSchema}), userController.createNew)
 router.post("/verify-otp", celebrate({[Segments.BODY]:otpSchema}), userController.verifyOTP)
 router.post("/login", celebrate({[Segments.BODY]:loginSchema}), userController.login)
 router.post("/send-otp", celebrate({[Segments.BODY]: {email: Joi.string().email().required()}}), userController.forgotPassword)
-router.post("/reset-password", middleware.tokenValidator, middleware.userExtractor, celebrate({[Segments.BODY]:resetSchema}), userController.resetPassword)
+router.post("/reset-password", jwt({ secret: "hoaingodong", algorithms: ["HS256"], requestProperty: "user" }), celebrate({[Segments.BODY]:resetSchema}), userController.resetPassword)
 router.get("/", userController.getAll)
 //organizer profile
 router.get("/profile/events/:id", profileController.profileEvent)
