@@ -23,13 +23,18 @@ const inviteFriends = async (request, response, next) => {
 
     const title = `${fromUser.name} invite you to ${event.title}`
 
+    const tokenDevices = []
     for (const friend of friends) {
-        try {
-            const toUser = await User.findById(friend)
-            await notification.sendNotification(toUser.tokenDevice, title)
-        } catch (exception) {
-            next(exception)
-        }
+        const toUser = await User.findById(friend)
+        tokenDevices.push(toUser.tokenDevice)
+    }
+
+    console.log(tokenDevices)
+
+    try {
+        await notification.sendNotification(tokenDevices, title)
+    } catch (exception) {
+        next(exception)
     }
 }
 
