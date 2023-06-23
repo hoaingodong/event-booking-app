@@ -24,13 +24,20 @@ const errorHandler = (error, request, response, next) => {
         return response.status(400).send({error: "malformed id"})
     } else if (error.name === "ValidationError") {
         return response.status(400).json({error: error.message})
-    } else if (error.name === "JsonWebTokenError") {
+    }
+    else if (error.message === "No authorization token was found") {
         return response.status(401).json({
-            error: "invalid token"
+            error: "token missing"
         })
-    } else if (error.name === "TokenExpiredError") {
+    }
+    else if (error.message === "jwt expired") {
         return response.status(401).json({
             error: "token expired"
+        })
+    }
+    else if (error.name === "UnauthorizedError") {
+        return response.status(401).json({
+            error: "invalid token"
         })
     }
     else if (error.message === "You haven't registered with this email") {
