@@ -43,6 +43,10 @@ const verifyOTP = async (otp, email) => {
 const login = async (body) => {
     const user = await User.findOne({ email: body.email })
 
+    if (!user){
+        throw new Error("You haven't registered with this email")
+    }
+
     if (user.verified == false){
         throw new Error("Your account has not been activated")
     }
