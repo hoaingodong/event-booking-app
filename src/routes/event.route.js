@@ -10,6 +10,7 @@ const eventSchema = require("../validation/event.validation")
 var { expressjwt: jwt } = require("express-jwt");
 
 router.get("/", celebrate({[Segments.QUERY]:filterSchema}), eventController.filter)
+router.get("/all", celebrate({[Segments.QUERY]:filterSchema}), eventController.getAll)
 router.get("/nearby", celebrate({[Segments.QUERY]:locationSchema}),  eventController.filterLocation)
 router.get("/search", celebrate({[Segments.QUERY]: {keyword: Joi.string()}}), eventController.search)
 router.get("/:id", eventController.getDetail)
