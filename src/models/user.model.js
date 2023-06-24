@@ -50,9 +50,7 @@ userSchema.methods.comparePassword = async function(password){
 userSchema.methods.getJwtToken = async function(){
     return jwt.sign(
         {id: this._id, username: this.username},
-        process.env.SECRET,
-        {expiresIn: 60 * 60}
-    );
+        process.env.SECRET    );
 }
 
 const User = mongoose.model("User", userSchema)
