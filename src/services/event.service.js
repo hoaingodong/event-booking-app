@@ -105,7 +105,7 @@ const update = async (id, body) => {
         location: location
     }
 
-    const savedEvent = await Event.findByIdAndUpdate(id, {...event})
+    const savedEvent = await Event.findByIdAndUpdate(id, {...event}, {new: true})
     console.log(event)
 
     return savedEvent
