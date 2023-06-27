@@ -17,8 +17,8 @@ router.get("/:id", eventController.getDetail)
 router.delete("/:id", jwt({ secret: "hoaingodong", algorithms: ["HS256"] }), eventController.deleteOne)
 router.post("/", jwt({ secret: "hoaingodong", algorithms: ["HS256"] }), upload.upload.any(), celebrate({[Segments.BODY]:eventSchema}), eventController.createNew)
 router.put("/:id", jwt({ secret: "hoaingodong", algorithms: ["HS256"] }), upload.upload.any(), celebrate({[Segments.BODY]:eventSchema}), eventController.update)
-router.post("/image/:id", jwt({ secret: "hoaingodong", algorithms: ["HS256"] }), upload.upload.any(), eventController.uploadImage)
-router.delete("/image/:id", jwt({ secret: "hoaingodong", algorithms: ["HS256"] }), eventController.deleteImage)
+router.post("/:id/image", jwt({ secret: "hoaingodong", algorithms: ["HS256"] }), upload.upload.any(), eventController.uploadImage)
+router.delete("/:id/image", jwt({ secret: "hoaingodong", algorithms: ["HS256"] }), eventController.deleteImage)
 
 module.exports = router
 
