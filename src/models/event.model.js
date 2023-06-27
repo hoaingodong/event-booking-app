@@ -21,8 +21,8 @@ const eventSchema = mongoose.Schema({
         }
     },
     address: String,
-    started_date: Date,
-    ended_date: Date
+    startDate: Date,
+    endDate: Date
 })
 
 eventSchema.plugin(uniqueValidator)

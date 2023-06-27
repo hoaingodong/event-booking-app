@@ -1,5 +1,5 @@
-const inviteFriendsService = require("../services/inviteFriends.service")
-const notification = require("../services/PushNotification")
+const inviteFriendsService = require("../services/user.service")
+const notificationService = require("../services/notification.service")
 const Event = require("../models/event.model")
 const User = require("../models/user.model")
 const {now} = require("mongoose");
@@ -51,7 +51,7 @@ const inviteFriends = async (request, response, next) => {
     console.log(tokenDevices)
 
     try {
-        await notification.sendNotification(tokenDevices, body, data)
+        await notificationService.sendNotification(tokenDevices, body, data)
     } catch (exception) {
         next(exception)
     }

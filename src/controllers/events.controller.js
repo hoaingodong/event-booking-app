@@ -109,14 +109,14 @@ const createNew = async (request, response, next) => {
          price: body.price,
          introduction: body.introduction,
          image: image,
-         started_date: body.started_date,
-         ended_date: body.ended_date,
-         organizer: body.user_id,
+         startDate: body.startDate,
+         endDate: body.endDate,
+         organizer: body.organizer,
          address: body.address,
          location: location
       }
 
-      const user = await User.findById(body.user_id)
+      const user = await User.findById(body.organizer)
       if (!user) {
          response.status(401).json({error: "Invalid user"})
       }
