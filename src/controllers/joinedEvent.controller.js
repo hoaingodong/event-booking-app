@@ -2,11 +2,11 @@ const myEventService = require("../services/joinedEvent.service")
 
 const createNew = async (request, response, next) => {
 
-    const user_id = request.user.id
-    const event_id = request.body.event_id
+    const userId = request.user.id
+    const eventId = request.body.eventId
 
     try {
-        const savedMyEvent = await myEventService.createNew(user_id, event_id)
+        const savedMyEvent = await myEventService.createNew(userId, eventId)
         response.status(201).json(savedMyEvent)
     } catch (exception) {
         next(exception)
@@ -15,9 +15,9 @@ const createNew = async (request, response, next) => {
 
 const getAllEvents = async (request, response, next) => {
 
-    const id = request.user.id
+    const userId = request.user.id
     try {
-        const myEvents = await myEventService.getAllEvents(id)
+        const myEvents = await myEventService.getAllEvents(userId)
         response.status(200).json(myEvents)
     } catch (exception) {
         next(exception)
@@ -26,10 +26,10 @@ const getAllEvents = async (request, response, next) => {
 
 const getUpcomingEvent = async (request, response, next) => {
 
-    const id = request.user.id
+    const userId = request.user.id
 
     try {
-        const myUpcomingEvents = await myEventService.getUpcomingEvent(id)
+        const myUpcomingEvents = await myEventService.getUpcomingEvent(userId)
         response.status(200).json(myUpcomingEvents)
     } catch (exception) {
         next(exception)
@@ -38,10 +38,10 @@ const getUpcomingEvent = async (request, response, next) => {
 
 const getLastEvent = async (request, response, next) => {
 
-    const id = request.user.id
+    const userId = request.user.id
 
     try {
-        const myLastEvents = await myEventService.getLastEvent(id)
+        const myLastEvents = await myEventService.getLastEvent(userId)
         response.status(200).json(myLastEvents)
     } catch (exception) {
         next(exception)
@@ -50,9 +50,9 @@ const getLastEvent = async (request, response, next) => {
 
 const getAllUsers = async (request, response, next) => {
 
-    const id = request.params.id
+    const eventId = request.params.id
     try {
-        const users = await myEventService.getAllUsers(id)
+        const users = await myEventService.getAllUsers(eventId)
         response.status(200).json(users)
     } catch (exception) {
         next(exception)

@@ -18,26 +18,21 @@ const inviteFriends = async (request, response, next) => {
 
     const id = request.user.id
     const fromUser = await User.findById(id)
-    console.log(fromUser)
 
     const eventId = request.body.eventId
-    console.log(eventId)
     const friends = request.body.friends
-    console.log(friends)
     const event = await Event.findById(eventId)
-    console.log(event)
     if (!event) {
         response.status(404).json({error: "Event not found"})
     }
 
     const body = `${fromUser.name} invite you to ${event.title}`
     const data = {
-        "from_user": fromUser,
+        "fromUser": fromUser,
         "content": body,
         "date": Date(now()),
         "action": ""
     }
-    console.log(data)
 
     const tokenDevices = []
     for (const friend of friends) {
@@ -47,8 +42,6 @@ const inviteFriends = async (request, response, next) => {
         }
 
     }
-
-    console.log(tokenDevices)
 
     try {
         await notificationService.sendNotification(tokenDevices, body, data)
