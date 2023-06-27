@@ -13,7 +13,8 @@ const getDetail = async (id) => {
 }
 
 const filter = async (body) => {
-    let events = await Event.find({startDate: {$gt: Date.now()}})
+    let events = await Event.find({startDate: {$gte: Date.now()}})
+    // console.log(events)
 
     events.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
 
@@ -30,12 +31,13 @@ const filter = async (body) => {
     if (body.maxPrice) {
         events = events.filter(element => element.price <= body.maxPrice)
     }
-    if (body.minDate) {
-        events = events.filter(element => element.startDate >= body.minDate)
+    if (body.minDate && body.maxDate) {
+        events = events.filter(element => body.minDate <= element.startDate <= body.maxDate )
     }
-    if (body.maxDate) {
-        events = events.filter(element => element.startDate >= body.maxDate)
+    if (body.thisDate) {
+        events = events.filter(element => String(element.startDate).slice(0, 15) === String(body.thisDate).slice(0, 15))
     }
+
 
     return events
 }
