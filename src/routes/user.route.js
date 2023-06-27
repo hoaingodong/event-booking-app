@@ -1,9 +1,7 @@
-const {expressjwt: jwt} = require("express-jwt")
 const userController = require("../controllers/users.controller");
 const profileController = require("../controllers/profile.controller");
 const express = require("express")
 const router = express.Router()
-var { expressjwt: jwt } = require("express-jwt");
 
 router.get("/", userController.getAll)
 //organizer profile
