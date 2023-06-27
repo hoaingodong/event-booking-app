@@ -1,5 +1,5 @@
-const cloudinary = require("../config/cloudinary.config")
 const fs = require("fs")
+const cloudinary = require("../config/cloudinary.config")
 
 const createImage = async (file) => {
     const uploader = async (path) => await cloudinary.uploads(path, "Avatars")

@@ -1,6 +1,6 @@
+const cloudinary = require("cloudinary");
 const Event = require("../models/event.model")
 const imageService = require("./image.service");
-const cloudinary = require("cloudinary");
 
 const getAll = async () => {
     const events = await Event.find({}).populate('organizer')

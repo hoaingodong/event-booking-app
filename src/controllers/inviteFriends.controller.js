@@ -1,8 +1,8 @@
+const {now} = require("mongoose");
 const inviteFriendsService = require("../services/user.service")
 const notificationService = require("../services/notification.service")
 const Event = require("../models/event.model")
 const User = require("../models/user.model")
-const {now} = require("mongoose");
 
 const getFriendsList = async (request, response, next) => {
     const id = request.user.id
