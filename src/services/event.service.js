@@ -13,9 +13,9 @@ const getDetail = async (id) => {
 }
 
 const filter = async (body) => {
-    let events = await Event.find({started_date : { $gt: Date.now()}})
+    let events = await Event.find({startDate : { $gt: Date.now()}})
 
-    events.sort((a,b) => new Date(a.started_date).getTime() - new Date(b.started_date).getTime());
+    events.sort((a,b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
 
     if (body.longitude && body.latitude){
         events = await filterLocation(body.longitude, body.latitude)
@@ -31,10 +31,10 @@ const filter = async (body) => {
         events = events.filter(element => element.price <= body.maxPrice)
     }
     if (body.minDate){
-        events = events.filter(element => element.started_date >= body.minDate)
+        events = events.filter(element => element.startDate >= body.minDate)
     }
     if (body.maxDate){
-        events = events.filter(element => element.started_date >= body.maxDate)
+        events = events.filter(element => element.startDate >= body.maxDate)
     }
 
     return events
@@ -99,8 +99,8 @@ const update = async (id, body) => {
         topics: body.topics,
         price: body.price,
         introduction: body.introduction,
-        started_date: body.started_date,
-        ended_date: body.ended_date,
+        startDate: body.startDate,
+        endDate: body.endDate,
         address: body.address,
         location: location
     }

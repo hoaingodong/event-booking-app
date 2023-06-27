@@ -5,9 +5,9 @@ const eventSchema = Joi.object().keys({
     topics: Joi.array().items(Joi.string()),
     price: Joi.number().required(),
     introduction: Joi.string().required(),
-    started_date: Joi.date().required(),
-    ended_date:Joi.date().required(),
-    user_id: Joi.string(),
+    startDate: Joi.date().required(),
+    endDate:Joi.date().required(),
+    organizer: Joi.string().required(),
     longitude: [
         Joi.number().required(),
         Joi.string().required()

@@ -13,7 +13,6 @@ const createNew = async (user) => {
 }
 
 const verifyOTP = async (otp, email) => {
-    // find email was register or not
     const user = await User.findOne({email})
 
     if (!user){
@@ -24,14 +23,12 @@ const verifyOTP = async (otp, email) => {
         throw new Error("Account already activated")
     }
 
-    //check OTP
     const result = otp ==  await myCache.get(`OTP${user.id}`)
 
     if (result == false){
         throw new Error("Wrong OTP or OTP was expired")
     }
 
-    //change verified status
     user.verified = true
     user.save()
 
@@ -116,11 +113,18 @@ const getAll = async () => {
     return users
 }
 
+const getFriendsList = async (id) => {
+    console.log(id)
+    const friends = User.find({_id: {$ne: id}})
+    return friends
+}
+
 module.exports = {
     createNew,
     verifyOTP,
     login,
     forgotPassword,
     resetPassword,
-    getAll
+    getAll,
+    getFriendsList
 }
