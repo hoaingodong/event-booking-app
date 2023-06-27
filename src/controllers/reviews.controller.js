@@ -1,6 +1,5 @@
 const reviewService = require("../services/review.service")
 
-
 const getAll = async (request, response, next) => {
    try {
       const reviews = await reviewService.getAll()

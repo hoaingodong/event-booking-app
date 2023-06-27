@@ -24,7 +24,7 @@ const userSchema = mongoose.Schema({
         default: 0
     },
     bio: String,
-    avatar:	Object,
+    avatar: Object,
     verified: {
         type: Boolean,
         default: false
@@ -43,14 +43,14 @@ userSchema.set("toJSON", {
     }
 })
 
-userSchema.methods.comparePassword = async function(password){
+userSchema.methods.comparePassword = async function (password) {
     return await bcrypt.compare(password, this.passwordHash)
 }
 
-userSchema.methods.getJwtToken = async function(){
+userSchema.methods.getJwtToken = async function () {
     return jwt.sign(
         {id: this._id, username: this.username},
-        process.env.SECRET    );
+        process.env.SECRET);
 }
 
 const User = mongoose.model("User", userSchema)

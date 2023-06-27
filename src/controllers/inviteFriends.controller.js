@@ -21,7 +21,6 @@ const inviteFriends = async (request, response, next) => {
         response.status(404).json("User not found")
     }
 
-
     const eventId = request.body.eventId
     const friends = request.body.friends
 
