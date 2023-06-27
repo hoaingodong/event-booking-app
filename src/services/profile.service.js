@@ -20,10 +20,9 @@ const deleteAvatar = async (avatar, user) => {
     const result = await cloudinary.uploader
         .destroy(avatar.id)
 
-    if (result.result == "not found")
-        {
-            throw new Error("Can not delete your avatar")
-        }
+    if (result.result == "not found") {
+        throw new Error("Can not delete your avatar")
+    }
 
     user.avatar = null
     user.save()
@@ -34,7 +33,7 @@ const deleteAvatar = async (avatar, user) => {
 const profileEvent = async (id) => {
 
     const user = await User.findById(id)
-    if (!user){
+    if (!user) {
         throw new Error("User not found")
     }
 
@@ -48,7 +47,7 @@ const profileAbout = async (id) => {
 
     const detailedUser = await User.findById(id)
 
-    if (!detailedUser){
+    if (!detailedUser) {
         throw new Error("User not found")
     }
 
@@ -58,7 +57,7 @@ const profileAbout = async (id) => {
 const profileReviews = async (id) => {
 
     const user = await User.findById(id)
-    if (!user){
+    if (!user) {
         throw new Error("User not found")
     }
 

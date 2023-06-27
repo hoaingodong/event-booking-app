@@ -1,4 +1,4 @@
-const NodeCache = require( "node-cache" );
+const NodeCache = require("node-cache");
 const bcrypt = require("bcryptjs");
 const myCache = new NodeCache();
 const User = require("../models/user.model")
@@ -15,17 +15,17 @@ const createNew = async (user) => {
 const verifyOTP = async (otp, email) => {
     const user = await User.findOne({email})
 
-    if (!user){
+    if (!user) {
         throw new Error("You haven't registered with this email")
     }
 
-    if (user.verified == true){
+    if (user.verified == true) {
         throw new Error("Account already activated")
     }
 
-    const result = otp ==  await myCache.get(`OTP${user.id}`)
+    const result = otp == await myCache.get(`OTP${user.id}`)
 
-    if (result == false){
+    if (result == false) {
         throw new Error("Wrong OTP or OTP was expired")
     }
 
@@ -38,13 +38,13 @@ const verifyOTP = async (otp, email) => {
 }
 
 const login = async (body) => {
-    const user = await User.findOne({ email: body.email })
+    const user = await User.findOne({email: body.email})
 
-    if (!user){
+    if (!user) {
         throw new Error("You haven't registered with this email")
     }
 
-    if (user.verified == false){
+    if (user.verified == false) {
         throw new Error("Your account has not been activated")
     }
 
@@ -67,7 +67,7 @@ const login = async (body) => {
 const generateOTP = () => {
     const digits = '0123456789';
     let OTP = '';
-    for (let i = 0; i < 4; i++ ) {
+    for (let i = 0; i < 4; i++) {
         OTP += digits[Math.floor(Math.random() * 10)];
     }
     return OTP;
@@ -76,7 +76,7 @@ const generateOTP = () => {
 const forgotPassword = async (email) => {
     const user = await User.findOne({email})
 
-    if (!user){
+    if (!user) {
         throw new Error("You haven't registered with this email")
     }
 
@@ -91,11 +91,11 @@ const forgotPassword = async (email) => {
 
 const resetPassword = async (user, password) => {
 
-    if (user.verified == false){
+    if (user.verified == false) {
         throw new Error("Your account has not been activated")
     }
 
-    if (!user){
+    if (!user) {
         throw new Error("You haven't registered with this email")
     }
 
