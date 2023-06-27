@@ -9,7 +9,7 @@ const defaultAppConfig = {
 // Initialize the default app
 admin.initializeApp(defaultAppConfig);
 
-const sendNotification = (tokenDevice, title) => {
+const sendNotification = (tokenDevices, body, data) => {
 
     let ios = {
         headers: {
@@ -19,7 +19,7 @@ const sendNotification = (tokenDevice, title) => {
         payload: {
             aps: {
                 alert: {
-                    title: title
+                    title: "New notification from Event Booking App"
                 },
                 badge: 1,
                 sound: 'default',
@@ -27,15 +27,20 @@ const sendNotification = (tokenDevice, title) => {
         }
     }
     let message = {
+        token: tokenDevices, // token của thiết bị muốn push notification
+        notification:{
+            "title": "New notification from Event Booking App",
+            "body": body
+        },
+        data : data,
         apns: ios,
-        token: tokenDevice // token của thiết bị muốn push notification
     }
     admin.messaging().send(message)
         .then((response) => {
             console.log("Send notification successfully", response)
         })
         .catch((error) => {
-            console.error("Fail to send notify", error)
+            console.error("Fail to send notification", error)
         });
 }
 
