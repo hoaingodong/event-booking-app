@@ -28,11 +28,11 @@ const sendNotification = (tokenDevices, body, data) => {
     }
     let message = {
         token: tokenDevices, // token của thiết bị muốn push notification
-        notification:{
+        notification: {
             "title": "New notification from Event Booking App",
             "body": body
         },
-        data : data,
+        data: data,
         apns: ios,
     }
     admin.messaging().sendMulticast(message)

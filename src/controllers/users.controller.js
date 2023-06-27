@@ -24,17 +24,17 @@ const createNew = async (request, response, next) => {
     }
 }
 
-const verifyOTP = async (request, response, next) =>{
+const verifyOTP = async (request, response, next) => {
     const body = request.body
     try {
-        const result  = await userService.verifyOTP(body.otp, body.email)
+        const result = await userService.verifyOTP(body.otp, body.email)
         response.status(200).json({token: result.token})
     } catch (exception) {
         next(exception)
     }
 }
 
-const login = async(request, response, next) =>{
+const login = async (request, response, next) => {
     const body = request.body
     try {
         const user = await userService.login(body)

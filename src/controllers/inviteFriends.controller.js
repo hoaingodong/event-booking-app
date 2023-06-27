@@ -37,7 +37,7 @@ const inviteFriends = async (request, response, next) => {
     const tokenDevices = []
     for (const friend of friends) {
         const toUser = await User.findById(friend)
-        if (toUser.tokenDevice){
+        if (toUser.tokenDevice) {
             tokenDevices.push(toUser.tokenDevice)
         }
 
