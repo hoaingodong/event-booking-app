@@ -35,7 +35,7 @@ const sendNotification = (tokenDevices, body, data) => {
         data : data,
         apns: ios,
     }
-    admin.messaging().send(message)
+    admin.messaging().sendMulticast(message)
         .then((response) => {
             console.log("Send notification successfully", response)
         })
