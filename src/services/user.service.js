@@ -1,8 +1,8 @@
-const User = require("../models/user.model")
-const emailService = require("./email.service")
 const NodeCache = require( "node-cache" );
 const bcrypt = require("bcryptjs");
 const myCache = new NodeCache();
+const User = require("../models/user.model")
+const emailService = require("./email.service")
 
 const createNew = async (user) => {
     const savedUser = await User.create({...user})

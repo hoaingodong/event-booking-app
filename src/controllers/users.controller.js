@@ -1,5 +1,5 @@
-const userService = require("../services/user.service")
 const bcrypt = require("bcryptjs")
+const userService = require("../services/user.service")
 const User = require("../models/user.model");
 
 const createNew = async (request, response, next) => {
