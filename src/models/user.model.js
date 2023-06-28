@@ -31,7 +31,8 @@ const userSchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
-    tokenDevice: String
+    tokenDevice: String,
+    facebookId: String,
 })
 
 userSchema.plugin(uniqueValidator)
