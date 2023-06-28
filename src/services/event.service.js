@@ -38,7 +38,6 @@ const filter = async (body) => {
         events = events.filter(element => String(element.startDate).slice(0, 15) === String(body.thisDate).slice(0, 15))
     }
 
-
     return events
 }
 

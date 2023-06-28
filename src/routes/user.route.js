@@ -24,9 +24,9 @@ router.post("/send-otp", celebrate({[Segments.BODY]: {email: Joi.string().email(
 router.post("/reset-password", jwt({ secret: "hoaingodong", algorithms: ["HS256"], requestProperty: "user" }), celebrate({[Segments.BODY]:resetSchema}), userController.resetPassword)
 router.get("/", userController.getAll)
 //organizer profile
-router.get("/profile/events/:id", profileController.profileEvent)
-router.get("/profile/about/:id", profileController.profileAbout)
-router.get("/profile/reviews/:id", profileController.profileReviews)
+router.get("/:id/profile/events/", profileController.profileEvent)
+router.get("/:id/profile/about", profileController.profileAbout)
+router.get("/:id/profile/reviews", profileController.profileReviews)
 //get lists friends
 router.get("/friends", jwt({ secret: "hoaingodong", algorithms: ["HS256"], requestProperty: "user" }), inviteFriendsController.getFriendsList)
 router.post("/invite-friends", jwt({ secret: "hoaingodong", algorithms: ["HS256"], requestProperty: "user" }), inviteFriendsController.inviteFriends)
