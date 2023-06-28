@@ -2,6 +2,8 @@ const mongoose = require("mongoose")
 const uniqueValidator = require("mongoose-unique-validator")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
+const findOrCreate = require("mongoose-findorcreate");
+
 
 const userSchema = mongoose.Schema({
     name: String,
@@ -52,6 +54,8 @@ userSchema.methods.getJwtToken = async function(){
         {id: this._id, username: this.username},
         process.env.SECRET    );
 }
+
+userSchema.plugin(findOrCreate);
 
 const User = mongoose.model("User", userSchema)
 

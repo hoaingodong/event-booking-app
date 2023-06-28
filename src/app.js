@@ -7,6 +7,7 @@ const {errors} = require("celebrate")
 const bodyParser = require("body-parser")
 const middleware = require("./utils/middleware")
 const logger = require("./utils/logger")
+var session = require('express-session')
 
 const v1Router = require("./routes/index.route")
 mongoose.set("strictQuery", false)
@@ -25,6 +26,13 @@ app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true  }))
 app.use(middleware.requestLogger)
+
+app.use(session({
+    secret: 'hoaingodong',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true }
+  }))
 
 app.use("/api/v1", v1Router)
 app.use(errors())
