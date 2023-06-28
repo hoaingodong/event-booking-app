@@ -20,10 +20,11 @@ passport.use(new FacebookTokenStrategy({
     fbGraphVersion: 'v3.0'
   }, async function (accessToken, refreshToken, profile, done) {
             console.log(accessToken, refreshToken, profile, done)
-    
             User.findOrCreate({facebookId: profile.id}, function (err, user) {
-                console.log(user)
-                return done(err, user);
+              user.name = profile.displayName
+              user.avatar = {url: profile._json.picture}
+              user.save()
+              return done(err, user);
               });
             }
 ));
