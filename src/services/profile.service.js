@@ -61,7 +61,7 @@ const profileReviews = async (id) => {
         throw new Error("User not found")
     }
 
-    const reviews = await Review.find({to_user: id}).populate("from_user").populate("to_user")
+    const reviews = await Review.find({toUser: id}).populate("fromUser").populate("toUser")
     return reviews
 }
 
