@@ -23,6 +23,9 @@ passport.use(new GoogleTokenStrategy({
 
         User.findOrCreate({ email: profile.emails[0].value}, function (err, user) {
             console.log(user)
+            user.name = profile.displayName
+            user.avatar = {url: profile._json.picture}
+            user.save()
             return done(err, user);
           });
         }
