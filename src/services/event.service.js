@@ -13,7 +13,9 @@ const getDetail = async (id) => {
 }
 
 const filter = async (body) => {
-    let events = await Event.find({startDate: {$gte: Date.now()}})
+    // let events = await Event.find({startDate: {$gte: Date.now()}})
+    let events = await Event.find({ $or: [ {startDate: {$gte: Date.now()}}, {  } ] })
+
     // console.log(events)
 
     events.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
@@ -35,6 +37,7 @@ const filter = async (body) => {
         events = events.filter(element => body.minDate <= element.startDate <= body.maxDate )
     }
     if (body.thisDate) {
+        console.log(Date.now())
         events = events.filter(element => String(element.startDate).slice(0, 15) === String(body.thisDate).slice(0, 15))
     }
 
@@ -56,6 +59,12 @@ const filterLocation = async (longitude, latitude) => {
                 key: "location"
             }
         }])
+
+    events.map(event => {
+        event['id'] = event['_id']
+        delete event['_id']
+        delete event['__v']
+    })
 
     return events
 }
