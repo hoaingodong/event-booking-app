@@ -13,10 +13,13 @@ const getDetail = async (id) => {
 }
 
 const filter = async (body) => {
-    // let events = await Event.find({startDate: {$gte: Date.now()}})
-    let events = await Event.find({ $or: [ {startDate: {$gte: Date.now()}}, {  } ] })
 
-    // console.log(events)
+    let allEvents = await Event.find( {})
+    todayEvents = allEvents.filter(element => String(element.startDate).slice(0, 15) === String(new Date()).slice(0, 15))
+
+    let events = await Event.find( {startDate: {$gte: Date.now()} })
+
+    events = events.concat(todayEvents)
 
     events.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
 
