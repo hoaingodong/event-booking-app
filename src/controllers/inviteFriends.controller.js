@@ -29,9 +29,10 @@ const inviteFriends = async (request, response, next) => {
 
     const body = `${fromUser.name} invite you to ${event.title}`
     const data = {
-        fromUser: String(id),
+        fromUser: id,
         content: body,
-        date: String(Date(now())),
+        date: Date(now()),
+        eventId: event.id
     }
 
     try {
@@ -59,9 +60,10 @@ const acceptJoiningEvent = async (request, response, next) => {
 
     const body = `${fromUser.name} join your event: ${event.title}`
     const data = {
-        fromUser: String(id),
+        fromUser: id,
         content: body,
-        date: String(Date(now())),
+        date: Date(now()),
+        eventId: event.id
     }
 
     try {
