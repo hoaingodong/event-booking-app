@@ -3,6 +3,7 @@ const inviteFriendsService = require("../services/user.service")
 const notificationService = require("../services/notification.service")
 const Event = require("../models/event.model")
 const User = require("../models/user.model")
+const myEventService = require("../services/joinedEvent.service")
 
 const getFriendsList = async (request, response, next) => {
     const id = request.user.id
@@ -28,28 +29,49 @@ const inviteFriends = async (request, response, next) => {
 
     const body = `${fromUser.name} invite you to ${event.title}`
     const data = {
-        "fromUser": fromUser,
-        "content": body,
-        "date": Date(now()),
-        "action": ""
-    }
-
-    const tokenDevices = []
-    for (const friend of friends) {
-        const toUser = await User.findById(friend)
-        if (toUser.tokenDevice) {
-            tokenDevices.push(toUser.tokenDevice)
-        }
-
+        fromUser: String(id),
+        content: body,
+        date: String(Date(now())),
     }
 
     try {
-        await notificationService.sendNotification(tokenDevices, body, data)
+        for (const friend of friends) {
+            const toUser = await User.findById(friend)
+            if (toUser.tokenDevice) {
+                console.log(toUser.tokenDevice)
+                await notificationService.sendNotification(String(toUser.tokenDevice), body, data)}
+            }
+
+    } catch (exception) {
+        next(exception)
+    }
+}
+
+const acceptJoiningEvent = async (request, response, next) => {
+    const id = request.user.id
+    const fromUser = await User.findById(id)
+    const eventId = request.body.eventId
+    const event = await Event.findById(eventId)
+    if (!event) {
+        response.status(404).json({error: "Event not found"})
+    }
+    const toUser = await User.findById(event.organizer)
+
+    const body = `${fromUser.name} join your event: ${event.title}`
+    const data = {
+        fromUser: String(id),
+        content: body,
+        date: String(Date(now())),
+    }
+
+    try {
+        await myEventService.createNew(id, eventId)
+        await notificationService.sendNotification(String(toUser.tokenDevice), body, data)
     } catch (exception) {
         next(exception)
     }
 }
 
 module.exports = {
-    getFriendsList, inviteFriends
+    getFriendsList, inviteFriends, acceptJoiningEvent
 }

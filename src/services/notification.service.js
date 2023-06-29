@@ -1,15 +1,13 @@
 const admin = require("firebase-admin");
 const configJsonFirebase = require("../config/service-account-file.json")
-const config = require("../utils/config")
 
 const defaultAppConfig = {
-    credential: admin.credential.cert(configJsonFirebase),
-    databaseURL: config.MONGODB_URI
+    credential: admin.credential.cert(configJsonFirebase)
 };
 // Initialize the default app
 admin.initializeApp(defaultAppConfig);
 
-const sendNotification = (tokenDevices, body, data) => {
+const sendNotification = (tokenDevice, body, data) => {
 
     let ios = {
         headers: {
@@ -27,7 +25,7 @@ const sendNotification = (tokenDevices, body, data) => {
         }
     }
     let message = {
-        token: tokenDevices, // token của thiết bị muốn push notification
+        token: tokenDevice, // token của thiết bị muốn push notification
         notification: {
             "title": "New notification from Event Booking App",
             "body": body
@@ -35,7 +33,7 @@ const sendNotification = (tokenDevices, body, data) => {
         data: data,
         apns: ios,
     }
-    admin.messaging().sendMulticast(message)
+    admin.messaging().send(message)
         .then((response) => {
             console.log("Send notification successfully", response)
         })

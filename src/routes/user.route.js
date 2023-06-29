@@ -30,6 +30,8 @@ router.get("/:id/profile/reviews", profileController.profileReviews)
 //get lists friends
 router.get("/friends", jwt({ secret: "hoaingodong", algorithms: ["HS256"], requestProperty: "user" }), inviteFriendsController.getFriendsList)
 router.post("/invite-friends", jwt({ secret: "hoaingodong", algorithms: ["HS256"], requestProperty: "user" }), inviteFriendsController.inviteFriends)
+router.post("/accept-joining-event", jwt({ secret: "hoaingodong", algorithms: ["HS256"], requestProperty: "user" }), inviteFriendsController.acceptJoiningEvent)
+
 //join events
 router.post("/join-event", jwt({ secret: "hoaingodong", algorithms: ["HS256"], requestProperty: "user" }), celebrate({[Segments.BODY]:joinEventSchema}), joinedEventController.createNew)
 router.get("/events", jwt({ secret: "hoaingodong", algorithms: ["HS256"], requestProperty: "user" }), joinedEventController.getAllEvents)
