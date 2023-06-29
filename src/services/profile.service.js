@@ -17,12 +17,13 @@ const uploadAvatar = async (user, file) => {
 
 const deleteAvatar = async (avatar, user) => {
 
-    const result = await cloudinary.uploader
-        .destroy(avatar.id)
-
-    // if (result.result == "not found") {
-    //     throw new Error("Can not delete your avatar")
-    // }
+    if (avatar.id) {
+        const result = await cloudinary.uploader
+            .destroy(avatar.id)
+        if (result.result == "not found") {
+            throw new Error("Can not delete your avatar")
+        }
+    }
 
     user.avatar = null
     user.save()
