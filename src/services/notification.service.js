@@ -31,7 +31,7 @@ const sendNotification = (tokenDevice, body, data) => {
             "body": body
         },
         data: data,
-        apns: ios,
+        // apns: ios,
     }
     admin.messaging().send(message)
         .then((response) => {

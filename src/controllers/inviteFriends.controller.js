@@ -34,6 +34,7 @@ const inviteFriends = async (request, response, next) => {
         date: Date(now()),
         eventId: event.id
     }
+    console.log(data)
 
     try {
         for (const friend of friends) {
