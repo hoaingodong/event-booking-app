@@ -22,7 +22,6 @@ passport.use(new FacebookTokenStrategy({
         console.log(accessToken, refreshToken, profile, done)
         User.findOrCreate({facebookId: profile.id}, function (err, user) {
             user.name = profile.displayName
-            user.email = profile.emails[0].value
             user.avatar = {url: profile.photos[0].value}
             user.save()
             return done(err, user);
