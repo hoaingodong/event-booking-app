@@ -53,7 +53,7 @@ const login = async (body) => {
         : await user.comparePassword(body.password)
 
     if (!(user && passwordCorrect)) {
-        throw new Error("Invalid username or password")
+        throw new Error("Invalid email or password")
     }
 
     const token = await user.getJwtToken()
