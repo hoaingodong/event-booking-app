@@ -119,7 +119,7 @@ const getAll = async () => {
 
 const getFriendsList = async (id) => {
     console.log(id)
-    const friends = User.find({_id: {$ne: id}})
+    const friends = User.find({_id: {$ne: id}, verified: true})
     return friends
 }
 
