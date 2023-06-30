@@ -32,7 +32,12 @@ const inviteFriends = async (request, response, next) => {
         fromUser: id,
         content: body,
         date: Date(now()),
-        eventId: event.id
+
+
+
+
+
+       eventId: event.id
     }
     console.log(data)
 
