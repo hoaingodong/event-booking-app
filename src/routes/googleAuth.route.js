@@ -36,7 +36,7 @@ passport.use(new GoogleTokenStrategy({
 //     return res.status(200).json({token, user})
 // });
 
-router.post('/google/token',  passport.authenticate('facebook-token'),
+router.post('/google/token',  passport.authenticate('google-token'),
     async (req, res) => {
         if (req.user.err) {
             res.status(401).json({
