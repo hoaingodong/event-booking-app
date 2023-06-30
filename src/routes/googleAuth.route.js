@@ -4,7 +4,6 @@ const router = express.Router()
 const passport = require('passport');
 const GoogleTokenStrategy = require('passport-google-token').Strategy;
 const User = require("../models/user.model")
-const userService = require("../services/user.service")
 
 passport.serializeUser(function(user, done) {
   done(null, user);
@@ -22,7 +21,6 @@ passport.use(new GoogleTokenStrategy({
         console.log(accessToken, refreshToken, profile, done)
 
         User.findOrCreate({ email: profile.emails[0].value}, function (err, user) {
-            console.log(user)
             user.name = profile.displayName
             user.avatar = {url: profile._json.picture}
             user.save()
@@ -31,12 +29,47 @@ passport.use(new GoogleTokenStrategy({
         }
 )
 );
-router.post('/google/token', passport.authenticate('google-token'),
-    async function(req, res) {
-    const user = req.user
-    const token = await user.getJwtToken()
-    return res.status(200).json({token, user})
-});
+// router.post('/google/token', passport.authenticate('google-token'),
+//     async function(req, res) {
+//     const user = req.user
+//     const token = await user.getJwtToken()
+//     return res.status(200).json({token, user})
+// });
+
+router.post('/google/token',  passport.authenticate('facebook-token'),
+    async (req, res) => {
+        if (req.user.err) {
+            res.status(401).json({
+                success: false,
+                message: 'Auth failed',
+                error: req.user.err
+            })
+        } else if (req.user) {
+            const user = req.user
+            const token = await user.getJwtToken()
+            // return res.status(200).json({token, user})
+            res.status(200).json({
+                success: true,
+                message: 'Enjoy your token!',
+                token: token,
+                user: req.user
+            })
+        } else {
+            res.status(401).json({
+                success: false,
+                message: 'Auth failed'
+            })
+        }
+    },
+    // add this callback for handling errors. Then you can set responses with codes or
+    // redirects as you like.
+    (error, req, res, next) => {
+        if(error) {
+            res.status(400).json({success: false, message: 'Auth failed', error})
+        }
+    }
+);
+
 
 module.exports = router
 
