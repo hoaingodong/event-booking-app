@@ -54,7 +54,7 @@ router.post('/facebook/token', celebrate({[Segments.BODY]: {access_token: Joi.st
     },
     (error, req, res, next) => {
         if(error) {
-            res.status(400).json({error: "Unauthorizer"})
+            res.status(401).json({error: "Unauthorizer"})
         }
     }
 );
