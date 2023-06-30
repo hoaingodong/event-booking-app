@@ -97,8 +97,7 @@ const acceptJoiningEvent = async (request, response, next) => {
             toUser: toUser,
             fromUser: fromUser,
             content: body,
-            date: Date.now(),
-            type: "ACCEPT"
+            date: Date.now()
         }
         const savedNotification = await notificationsService.createNew(notification)
         response.status(200).json(savedNotification)
@@ -164,8 +163,7 @@ const rejectJoiningEvent = async (request, response, next) => {
             toUser: toUser,
             fromUser: fromUser,
             content: body,
-            date: Date.now(),
-            type: "REJECT"
+            date: Date.now()
         }
         const savedNotification = await notificationsService.createNew(notification)
         response.status(200).json(savedNotification)
