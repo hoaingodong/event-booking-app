@@ -141,7 +141,7 @@ const rejectJoiningEvent = async (request, response, next) => {
     if (!event) {
         response.status(404).json({error: "Event not found"})
     }
-    const toUser = await User.findById(notification.toUser)
+    const toUser = await User.findById(notification.fromUser)
 
     const body = `${fromUser.name} reject your invitation to ${event.title}`
     const data = {
@@ -165,7 +165,7 @@ const rejectJoiningEvent = async (request, response, next) => {
             fromUser: fromUser,
             content: body,
             date: Date.now(),
-            type: "ACCEPT"
+            type: "REJECT"
         }
         const savedNotification = await notificationsService.createNew(notification)
         response.status(200).json(savedNotification)
