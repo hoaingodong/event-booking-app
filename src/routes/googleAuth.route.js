@@ -30,12 +30,12 @@ passport.use(new GoogleTokenStrategy({
         }
 )
 );
-router.post('/google/token', function(req, res, next) { passport.authenticate('google-token'),
+router.post('/google/token',  passport.authenticate('google-token'),
     async function(req, res) {
     const user = req.user
     const token = await user.getJwtToken()
     return res.status(200).json({token, user})
-}}
+}
 );
 
 // router.post('/google/token',  passport.authenticate('google-token'),
