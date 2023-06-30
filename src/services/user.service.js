@@ -91,12 +91,16 @@ const forgotPassword = async (email) => {
 
 const resetPassword = async (user, password) => {
 
+    if (!user) {
+        throw new Error("You haven't registered with this email")
+    }
+
     if (user.verified == false) {
         throw new Error("Your account has not been activated")
     }
 
-    if (!user) {
-        throw new Error("You haven't registered with this email")
+    if (await user.comparePassword(password)) {
+        throw new Error("Duplicate password, please enter the new one")
     }
 
     const saltRounds = 10
