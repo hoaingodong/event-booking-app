@@ -1,6 +1,5 @@
 const Notification = require("../models/notification")
 const User = require("../models/user.model");
-const Event = require("../models/event.model");
 
 const createNew = async (notification) => {
     const savedNotification = await Notification.create({...notification})
@@ -9,7 +8,7 @@ const createNew = async (notification) => {
 
 const deleteOne = async (id) => {
 
-    const notification = await Event.findByIdAndDelete(id)
+    const notification = await Notification.findByIdAndDelete(id)
 
     return notification
 }

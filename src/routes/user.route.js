@@ -34,6 +34,8 @@ router.post("/invite-friends", jwt({ secret: "hoaingodong", algorithms: ["HS256"
 //get notifications
 router.get("/notifications", jwt({ secret: "hoaingodong", algorithms: ["HS256"], requestProperty: "user" }), inviteFriendsController.getNotifications)
 router.get("/accept-joining-event/:id", jwt({ secret: "hoaingodong", algorithms: ["HS256"], requestProperty: "user" }), inviteFriendsController.acceptJoiningEvent)
+router.get("/reject-joining-event/:id", jwt({ secret: "hoaingodong", algorithms: ["HS256"], requestProperty: "user" }), inviteFriendsController.rejectJoiningEvent)
+
 
 //join events
 router.post("/join-event", jwt({ secret: "hoaingodong", algorithms: ["HS256"], requestProperty: "user" }), celebrate({[Segments.BODY]:joinEventSchema}), joinedEventController.createNew)

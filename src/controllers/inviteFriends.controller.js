@@ -54,8 +54,8 @@ const inviteFriends = async (request, response, next) => {
                 type: "INVITE",
                 event: event
             }
-            const savedNotification = await notificationsService.createNew(notification)
-            response.status(200).json(savedNotification)
+            await notificationsService.createNew(notification)
+            response.status(200).json({message: "invite successfully"})
             }
 
     } catch (exception) {
@@ -119,6 +119,64 @@ const getNotifications = async (request, response, next) => {
     }
 }
 
+const deleteOne = async (request, response, next) => {
+    const id = request.params.id
+
+    try {
+        const notification = await notificationsService.deleteOne(id)
+        response.status(204).json(notification)
+    } catch (exception) {
+        next(exception)
+    }
+}
+
+const rejectJoiningEvent = async (request, response, next) => {
+    const userId = request.user.id
+    const notificationId = request.params.id
+
+    const notification = await notificationsService.findOne(notificationId)
+
+    const fromUser = await User.findById(userId)
+    const event = await Event.findById(notification.event)
+    if (!event) {
+        response.status(404).json({error: "Event not found"})
+    }
+    const toUser = await User.findById(notification.toUser)
+
+    const body = `${fromUser.name} reject your invitation to ${event.title}`
+    const data = {
+        fromUser: userId,
+        content: body,
+        date: Date(now()),
+        eventId: event.id
+    }
+
+    try {
+        await myEventService.createNew(userId, event.id)
+        //if toUser have token device -> delete this notification and push the another one
+        if (toUser.tokenDevice) {
+            await notificationService.sendNotification(String(toUser.tokenDevice), body, data)
+        }
+
+        await notificationsService.deleteOne(notificationId)
+
+        const notification = {
+            toUser: toUser,
+            fromUser: fromUser,
+            content: body,
+            date: Date.now(),
+            type: "ACCEPT"
+        }
+        const savedNotification = await notificationsService.createNew(notification)
+        response.status(200).json(savedNotification)
+
+    } catch (exception) {
+        next(exception)
+    }
+}
+
+
+
 module.exports = {
-    getFriendsList, inviteFriends, acceptJoiningEvent, getNotifications
+    getFriendsList, inviteFriends, acceptJoiningEvent, getNotifications, deleteOne, rejectJoiningEvent
 }
