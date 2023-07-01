@@ -1,4 +1,6 @@
+require("dotenv").config()
 const logger = require("./logger")
+const { expressjwt: jwt } = require("express-jwt");
 
 const requestLogger = (request, response, next) => {
     logger.info("Method: ", request.method)
@@ -95,8 +97,13 @@ const errorHandler = (error, request, response, next) => {
     next()
 }
 
+const authJwt = ()=>{
+    return jwt({ secret: process.env.SECRET, algorithms: ["HS256"], requestProperty: "user" })
+}
+
 module.exports = {
     requestLogger,
     unknownEndpoint,
-    errorHandler
+    errorHandler,
+    authJwt
 }
