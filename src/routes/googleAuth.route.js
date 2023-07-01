@@ -4,6 +4,8 @@ const router = express.Router();
 const passport = require("passport");
 const GoogleTokenStrategy = require("passport-google-token").Strategy;
 const User = require("../models/user.model");
+const {celebrate, Segments} = require("celebrate");
+const Joi = require("joi");
 
 passport.serializeUser(function (user, done) {
   done(null, user);
@@ -20,6 +22,7 @@ passport.use(
       clientSecret: process.env.CLIENT_SECRET,
     },
     async function (accessToken, refreshToken, profile, done) {
+      console.log(accessToken, refreshToken, profile, done);
 
       User.findOrCreate(
         { email: profile.emails[0].value },
@@ -35,7 +38,7 @@ passport.use(
   )
 );
 
-router.post('/google/token', (req, res) => {
+router.post('/google/token', celebrate({[Segments.BODY]: {access_token: Joi.string().required()}}), (req, res) => {
   passport.authenticate('google-token', async (err, user, info) => {
     if (err) {
       return res.status(500).send();
@@ -47,5 +50,6 @@ router.post('/google/token', (req, res) => {
     return res.status(200).json({ token, user });
   })(req, res);
 });
+
 
 module.exports = router;
