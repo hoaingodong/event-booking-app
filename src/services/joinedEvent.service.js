@@ -41,7 +41,7 @@ const getUpcomingEvent = async (userId) => {
     }
     const myEvents = await JoinedEvent.find({user: userId}).populate("event")
 
-    const myUpcomingEvents = await myEvents.filter(element => element.event.startDate > Date.now())
+    const myUpcomingEvents = await myEvents.filter(element => element.event?.startDate > Date.now())
 
     return myUpcomingEvents
 }
@@ -54,7 +54,7 @@ const getLastEvent = async (userId) => {
     }
     const myEvents = await JoinedEvent.find({user: userId}).populate("event")
 
-    const myLastEvents = await myEvents.filter(element => element.event.startDate < Date.now())
+    const myLastEvents = await myEvents.filter(element => element.event?.startDate < Date.now())
 
     return myLastEvents
 }
