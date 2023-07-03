@@ -16,26 +16,30 @@ passport.deserializeUser(function (user, done) {
 });
 
 passport.use(
-  new GoogleTokenStrategy(
-    {
-      clientID: process.env.CLIENT_ID,
-      clientSecret: process.env.CLIENT_SECRET,
-    },
-    async function (accessToken, refreshToken, profile, done) {
-      console.log(accessToken, refreshToken, profile, done);
+    new GoogleTokenStrategy(
+        {
+            clientID: process.env.CLIENT_ID,
+            clientSecret: process.env.CLIENT_SECRET,
+        },
+        async function (accessToken, refreshToken, profile, done) {
+            console.log(accessToken, refreshToken, profile, done);
 
-      User.findOrCreate(
-        { email: profile.emails[0].value },
-        function (err, user) {
-          user.name = profile.displayName;
-          user.avatar = { url: profile._json.picture };
-          user.verified = true;
-          user.save();
-          return done(err, user)
+            User.findOrCreate(
+                {email: profile.emails[0].value},
+                function (err, user) {
+                    if (!user.name) {
+                        user.name = profile.displayName
+                    }
+                    if (!user.avatar) {
+                        user.avatar = {url: profile._json.picture}
+                    }
+                    user.verified = true;
+                    user.save();
+                    return done(err, user)
+                }
+            );
         }
-      );
-    }
-  )
+    )
 );
 
 router.post('/google/token', celebrate({[Segments.BODY]: {access_token: Joi.string().required(), tokenDevice: Joi.string()}}), (req, res) => {
