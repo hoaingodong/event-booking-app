@@ -58,9 +58,11 @@ const login = async (body) => {
 
     const token = await user.getJwtToken()
 
-    const duplicatedToken = await User.findOne({$and: [{tokenDevice: { $exists: true }}, {tokenDevice: String(body.tokenDevice)}]})
-    duplicatedToken.tokenDevice = ""
-    duplicatedToken.save()
+    if (body.tokenDevice) {
+        const duplicatedToken = await User.findOne({$and: [{tokenDevice: {$exists: true}}, {tokenDevice: String(body.tokenDevice)}]})
+        duplicatedToken.tokenDevice = ""
+        duplicatedToken.save()
+    }
 
     user.tokenDevice = body.tokenDevice
     user.save()

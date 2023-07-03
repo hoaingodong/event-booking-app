@@ -14,14 +14,14 @@ const getDetail = async (id) => {
 
 const filter = async (body) => {
 
-    let allEvents = await Event.find( {})
-    todayEvents = allEvents.filter(element => String(element.startDate).slice(0, 15) === String(new Date()).slice(0, 15))
+    // let allEvents = await Event.find( {})
+    // todayEvents = allEvents.filter(element => String(element.startDate).slice(0, 15) === String(new Date()).slice(0, 15))
 
     let events = await Event.find( {startDate: {$gte: Date.now()} })
 
-    events = events.concat(todayEvents)
+    // events = events.concat(todayEvents)
 
-    events.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+    // events.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
 
     if (body.longitude && body.latitude) {
         events = await filterLocation(body.longitude, body.latitude)
