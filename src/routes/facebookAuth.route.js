@@ -26,7 +26,6 @@ passport.use(new FacebookTokenStrategy({
             user.name = profile.displayName
             user.avatar = {url: profile.photos[0].value}
             user.verified = true
-            user.save()
             return done(err, user);
         });
     }
@@ -39,11 +38,13 @@ passport.use(new FacebookTokenStrategy({
 //         return res.status(200).json({token, user})
 //     });
 
-router.post('/facebook/token', celebrate({[Segments.BODY]: {access_token: Joi.string().required()}}),  passport.authenticate('facebook-token'),
+router.post('/facebook/token', celebrate({[Segments.BODY]: {access_token: Joi.string().required(), tokenDevice: Joi.string()}}),  passport.authenticate('facebook-token'),
     async (req, res) => {
         if (req.user) {
             const user = req.user
             const token = await user.getJwtToken()
+            req.user.tokenDevice = req.body.tokenDevice
+            req.user.save()
             res.status(200).json({
                 token: token,
                 user: req.user
