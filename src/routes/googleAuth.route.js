@@ -38,7 +38,7 @@ passport.use(
   )
 );
 
-router.post('/google/token', celebrate({[Segments.BODY]: {access_token: Joi.string().required()}}), (req, res) => {
+router.post('/google/token', celebrate({[Segments.BODY]: {access_token: Joi.string().required(), tokenDevice: Joi.string()}}), (req, res) => {
   passport.authenticate('google-token', async (err, user, info) => {
     if (err) {
       return res.status(500).send();
@@ -46,7 +46,9 @@ router.post('/google/token', celebrate({[Segments.BODY]: {access_token: Joi.stri
     if (!user && info) {
             return res.status(401).json({error: "Unauthorized"});
     }
+
     const token = await user.getJwtToken();
+    user.tokenDevice = req.body.tokenDevice
     return res.status(200).json({ token, user });
   })(req, res);
 });
