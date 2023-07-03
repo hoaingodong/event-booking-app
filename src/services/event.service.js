@@ -4,7 +4,8 @@ const imageService = require("./image.service");
 
 const getAll = async () => {
     const events = await Event.find({}).populate('organizer')
-    return events
+
+    return eventsn
 }
 
 const getDetail = async (id) => {
@@ -51,7 +52,7 @@ const filterLocation = async (longitude, latitude) => {
             $geoNear: {
                 near: {
                     type: 'Point',
-                    coordinates: [parseFloat(longitude), parseFloat(latitude)]
+                    coordinates: {longitude: parseFloat(longitude), latitude: parseFloat(latitude)}
                 },
 
                 maxDistance: 10 * 1000,
