@@ -90,6 +90,11 @@ const errorHandler = (error, request, response, next) => {
             error: error.message
         })
     }
+    else if (error.message === "You have already join this event") {
+        return response.status(403).json({
+            error: error.message
+        })
+    }
     else {
         return response.status(502).json({error: "Error Server"})
     }

@@ -18,6 +18,11 @@ const createNew = async (userId, eventId) => {
         event: eventId
     }
 
+    const duplicatedJoinedEvent = await JoinedEvent.find({myEvent})
+    if (duplicatedJoinedEvent) {
+        throw new Error("You have already join this event")
+    }
+
     const savedMyEvent = await JoinedEvent.create({...myEvent})
     return savedMyEvent
 }
