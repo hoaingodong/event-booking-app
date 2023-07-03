@@ -61,6 +61,15 @@ const login = async (body) => {
     user.tokenDevice = body.tokenDevice
     user.save()
 
+    if (body.tokenDevice) {
+        console.log(body.tokenDevice)
+        const duplicatedToken = await User.findOne({$and: [{tokenDevice: {$exists: true}}, {tokenDevice: String(body.tokenDevice)}, {_id: {$ne: user.id}}]})
+        if (duplicatedToken){
+            duplicatedToken.tokenDevice = ""
+            duplicatedToken.save()
+        }
+    }
+
     return {token, user}
 }
 
