@@ -87,9 +87,12 @@ const createNew = async (request, response, next) => {
     try {
         const file = request.files[0]
         const image = await imageService.createImage(file)
-        const coordinates = []
-        coordinates.push(body.longitude)
-        coordinates.push(body.latitude)
+
+        const coordinates = {
+            longitude: body.longitude,
+            latitude: body.latitude
+        }
+
         const location = {
             coordinates: coordinates
         }

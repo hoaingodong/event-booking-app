@@ -5,7 +5,7 @@ const imageService = require("./image.service");
 const getAll = async () => {
     const events = await Event.find({}).populate('organizer')
 
-    return eventsn
+    return events
 }
 
 const getDetail = async (id) => {
