@@ -5,6 +5,7 @@ const Event = require("../models/event.model")
 const User = require("../models/user.model")
 const myEventService = require("../services/joinedEvent.service")
 const notificationsService = require("../services/notifications.service")
+const JoinedEvent = require("../models/joinedEvent.model");
 
 const getFriendsList = async (request, response, next) => {
     const id = request.user.id
@@ -85,7 +86,11 @@ const acceptJoiningEvent = async (request, response, next) => {
     }
 
     try {
-        await myEventService.createNew(userId, event.id)
+        const duplicatedJoinedEvent = await JoinedEvent.findOne({$and: [{user: userId}, {event: event.id}]})
+        if (!duplicatedJoinedEvent) {
+            await myEventService.createNew(userId, event.id)
+        }
+
         //if toUser have token device -> delete this notification and push the another one
         if (toUser.tokenDevice) {
             await notificationService.sendNotification(String(toUser.tokenDevice), body, data)
