@@ -4,7 +4,6 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const findOrCreate = require("mongoose-findorcreate");
 
-
 const userSchema = mongoose.Schema({
     name: String,
     email: {
@@ -13,7 +12,8 @@ const userSchema = mongoose.Schema({
     },
     role: {
         type: String,
-        default: "USER"
+        default: "USER",
+        enum : ['USER', 'ADMIN', 'ORGANIZER'],
     },
     passwordHash: String,
     interests: Array,
@@ -53,7 +53,13 @@ userSchema.methods.comparePassword = async function(password){
 userSchema.methods.getJwtToken = async function(){
     return jwt.sign(
         {id: this._id, username: this.username},
-        process.env.SECRET    );
+        process.env.SECRET
+    );
+}
+
+userSchema.methods.hashPassword = async function(password){
+    const saltRounds = 10
+    return await bcrypt.hash(password, saltRounds)
 }
 
 userSchema.plugin(findOrCreate);

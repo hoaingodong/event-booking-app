@@ -21,10 +21,10 @@ const inviteFriends = async (request, response, next) => {
 
     const id = request.user.id
     const fromUser = await User.findById(id)
-
     const eventId = request.body.eventId
     const friends = request.body.friends
     const event = await Event.findById(eventId)
+
     if (!event) {
         response.status(404).json({error: "Event not found"})
     }
@@ -36,7 +36,6 @@ const inviteFriends = async (request, response, next) => {
         date: Date(now()),
         eventId: event.id
     }
-    console.log(data)
 
     try {
         for (const friend of friends) {
@@ -67,16 +66,15 @@ const inviteFriends = async (request, response, next) => {
 const acceptJoiningEvent = async (request, response, next) => {
     const userId = request.user.id
     const notificationId = request.params.id
-
     const notification = await notificationsService.findOne(notificationId)
-
     const fromUser = await User.findById(userId)
     const event = await Event.findById(notification.event)
+
     if (!event) {
         response.status(404).json({error: "Event not found"})
     }
-    const toUser = await User.findById(event.organizer)
 
+    const toUser = await User.findById(event.organizer)
     const body = `${fromUser.name} join your ${event.title}`
     const data = {
         fromUser: userId,
@@ -91,7 +89,6 @@ const acceptJoiningEvent = async (request, response, next) => {
             await myEventService.createNew(userId, event.id)
         }
 
-        //if toUser have token device -> delete this notification and push the another one
         if (toUser.tokenDevice) {
             await notificationService.sendNotification(String(toUser.tokenDevice), body, data)
         }
@@ -137,16 +134,14 @@ const deleteOne = async (request, response, next) => {
 const rejectJoiningEvent = async (request, response, next) => {
     const userId = request.user.id
     const notificationId = request.params.id
-
     const notification = await notificationsService.findOne(notificationId)
-
     const fromUser = await User.findById(userId)
     const event = await Event.findById(notification.event)
+
     if (!event) {
         response.status(404).json({error: "Event not found"})
     }
     const toUser = await User.findById(notification.fromUser)
-
     const body = `${fromUser.name} reject your invitation to ${event.title}`
     const data = {
         fromUser: userId,
@@ -157,7 +152,7 @@ const rejectJoiningEvent = async (request, response, next) => {
 
     try {
         await myEventService.createNew(userId, event.id)
-        //if toUser have token device -> delete this notification and push the another one
+
         if (toUser.tokenDevice) {
             await notificationService.sendNotification(String(toUser.tokenDevice), body, data)
         }

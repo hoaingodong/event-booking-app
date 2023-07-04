@@ -17,7 +17,8 @@ const filterSchema= Joi.object().keys({
     latitude: [
         Joi.number(),
         Joi.string()
-    ]
+    ],
+    keyword: Joi.string()
 })
 
 module.exports = filterSchema

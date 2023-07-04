@@ -16,6 +16,7 @@ const createNew = async (request, response, next) => {
 const getAllEvents = async (request, response, next) => {
 
     const userId = request.user.id
+
     try {
         const myEvents = await myEventService.getAllEvents(userId)
         response.status(200).json(myEvents)
@@ -51,6 +52,7 @@ const getLastEvent = async (request, response, next) => {
 const getAllUsers = async (request, response, next) => {
 
     const eventId = request.params.id
+
     try {
         const users = await myEventService.getAllUsers(eventId)
         response.status(200).json(users)

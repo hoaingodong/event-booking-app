@@ -8,11 +8,11 @@ const {celebrate, Segments} = require("celebrate");
 const Joi = require("joi");
 
 passport.serializeUser(function (user, done) {
-  done(null, user);
+    done(null, user);
 });
 
 passport.deserializeUser(function (user, done) {
-  done(null, user);
+    done(null, user);
 });
 
 passport.use(
@@ -42,19 +42,24 @@ passport.use(
     )
 );
 
-router.post('/google/token', celebrate({[Segments.BODY]: {access_token: Joi.string().required(), tokenDevice: Joi.string()}}), (req, res) => {
-  passport.authenticate('google-token', async (err, user, info) => {
-    if (err) {
-      return res.status(500).send();
+router.post('/google/token', celebrate({
+    [Segments.BODY]: {
+        access_token: Joi.string().required(),
+        tokenDevice: Joi.string()
     }
-    if (!user && info) {
+}), (req, res) => {
+    passport.authenticate('google-token', async (err, user, info) => {
+        if (err) {
+            return res.status(500).send();
+        }
+        if (!user && info) {
             return res.status(401).json({error: "Unauthorized"});
-    }
+        }
 
-    const token = await user.getJwtToken();
-    user.tokenDevice = req.body.tokenDevice
-    return res.status(200).json({ token, user });
-  })(req, res);
+        const token = await user.getJwtToken();
+        user.tokenDevice = req.body.tokenDevice
+        return res.status(200).json({token, user});
+    })(req, res);
 });
 
 

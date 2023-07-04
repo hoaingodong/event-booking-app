@@ -5,6 +5,7 @@ const uploadAvatar = async (request, response, next) => {
 
     const id = request.user.id
     const user = await User.findById(id)
+
     if (!user) {
         response.status(404).json("User not found")
     }
@@ -27,6 +28,7 @@ const deleteAvatar = async (request, response, next) => {
 
     const id = request.user.id
     const user = await User.findById(id)
+
     if (!user) {
         response.status(404).json("User not found")
     }

@@ -1,4 +1,3 @@
-const bcrypt = require("bcryptjs")
 const userService = require("../services/user.service")
 const User = require("../models/user.model");
 
@@ -6,18 +5,8 @@ const createNew = async (request, response, next) => {
 
     const body = request.body
 
-    const saltRounds = 10
-    const passwordHash = await bcrypt.hash(body.password, saltRounds)
-
-    const user = {
-        name: body.name,
-        email: body.email,
-        role: body.role,
-        passwordHash,
-    }
-
     try {
-        const savedUser = await userService.createNew(user)
+        const savedUser = await userService.createNew(body)
         response.status(201).json(savedUser)
     } catch (exception) {
         next(exception)

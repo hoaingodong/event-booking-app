@@ -10,6 +10,7 @@ const getAll = async () => {
 
 const getDetail = async (id) => {
     const event = await Event.findById(id).populate("organizer")
+
     return event
 }
 
@@ -19,13 +20,13 @@ const filter = async (body) => {
     if (body.longitude && body.latitude) {
         events = await filterLocation(body.longitude, body.latitude)
         events = events.filter(element => (element.startDate >= Date.now()))
-        events.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
     }
 
     else {
         events = await Event.find( {startDate: {$gte: Date.now()} })
-        events.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
     }
+
+    events.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
 
     if (body.topics) {
         events = events.filter(element => element.topics.some(item => body.topics.includes(item)))
@@ -45,6 +46,10 @@ const filter = async (body) => {
     if (body.thisDate) {
         console.log(Date.now())
         events = events.filter(element => String(element.startDate).slice(0, 15) === String(body.thisDate).slice(0, 15))
+    }
+    if (body.keyword) {
+        const keyword = body.keyword.toLowerCase().replace(/\s+/g, ' ').trim()
+        events = events.filter(element => element.title.toLowerCase().includes(keyword))
     }
 
     return events
@@ -71,18 +76,6 @@ const filterLocation = async (longitude, latitude) => {
         delete event['_id']
         delete event['__v']
     })
-
-    return events
-}
-
-const search = async (body) => {
-    let events = await Event.find( {startDate: {$gte: Date.now()} })
-    events.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
-
-    if (body.keyword) {
-        const keyword = body.keyword.toLowerCase().replace(/\s+/g, ' ').trim()
-        events = await events.filter(element => element.title.toLowerCase().includes(keyword))
-    }
 
     return events
 }
@@ -122,7 +115,6 @@ const update = async (id, body) => {
     }
 
     const savedEvent = await Event.findByIdAndUpdate(id, {...event}, {new: true})
-    console.log(event)
 
     return savedEvent
 }
@@ -150,5 +142,5 @@ const deleteImage = async (image, event) => {
 }
 
 module.exports = {
-    getAll, getDetail, filter, filterLocation, search, deleteOne, createNew, update, uploadImage, deleteImage
+    getAll, getDetail, filter, filterLocation, deleteOne, createNew, update, uploadImage, deleteImage
 }

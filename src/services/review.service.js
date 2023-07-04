@@ -1,7 +1,9 @@
 const Review = require("../models/review.model")
 
 const getAll = async () => {
+
     const reviews = await Review.find({}).populate("fromUser").populate("toUser")
+
     return reviews
 }
 

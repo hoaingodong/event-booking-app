@@ -3,6 +3,7 @@ const imageService = require("../services/image.service");
 const User = require("../models/user.model");
 
 const getAll = async (request, response, next) => {
+
     try {
         const events = await eventService.getAll()
         response.status(200).json(events)
@@ -45,6 +46,7 @@ const filterLocation = async (request, response, next) => {
     const body = request.query
     const longitude = parseFloat(body.longitude)
     const latitude = parseFloat(body.latitude)
+
     try {
         const events = await eventService.filterLocation(longitude, latitude)
         if (events) {
@@ -57,23 +59,9 @@ const filterLocation = async (request, response, next) => {
     }
 }
 
-const search = async (request, response, next) => {
-    const body = request.query
-
-    try {
-        const events = await eventService.search(body)
-        if (events) {
-            response.status(200).json(events)
-        } else {
-            return response.status(404).json({error: "Event not found"})
-        }
-    } catch (exception) {
-        next(exception)
-    }
-}
-
 const deleteOne = async (request, response, next) => {
     const id = request.params.id
+
     try {
         await eventService.deleteOne(id)
         response.status(204).json()
@@ -84,19 +72,17 @@ const deleteOne = async (request, response, next) => {
 
 const createNew = async (request, response, next) => {
     const body = request.body
+
     try {
         const file = request.files[0]
         const image = await imageService.createImage(file)
-
         const coordinates = {
             longitude: body.longitude,
             latitude: body.latitude
         }
-
         const location = {
             coordinates: coordinates
         }
-
         const event = {
             title: body.title,
             topics: body.topics,
@@ -109,8 +95,8 @@ const createNew = async (request, response, next) => {
             address: body.address,
             location: location
         }
-
         const user = await User.findById(body.organizer)
+
         if (!user) {
             response.status(401).json({error: "Invalid user"})
         }
@@ -162,7 +148,6 @@ const deleteImage = async (request, response, next) => {
 
     const id = request.params.id
     const event = await eventService.getDetail(id)
-
     const image = event.image
 
     if (!image) {
@@ -177,5 +162,5 @@ const deleteImage = async (request, response, next) => {
 }
 
 module.exports = {
-    getAll, getDetail, filter, filterLocation, search, deleteOne, createNew, update, uploadImage, deleteImage
+    getAll, getDetail, filter, filterLocation, deleteOne, createNew, update, uploadImage, deleteImage
 }

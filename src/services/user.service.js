@@ -1,18 +1,29 @@
 const NodeCache = require("node-cache");
-const bcrypt = require("bcryptjs");
 const myCache = new NodeCache();
 const User = require("../models/user.model")
 const emailService = require("./email.service")
 
-const createNew = async (user) => {
+const createNew = async (body) => {
+
+    const user = {
+        name: body.name,
+        email: body.email,
+        role: body.role
+    }
+
     const savedUser = await User.create({...user})
+    savedUser.passwordHash = await savedUser.hashPassword(body.password)
+    savedUser.save()
+
     const otp = generateOTP()
     await emailService.sendEmail(savedUser.email, otp)
     myCache.set(`OTP${savedUser.id}`, otp, 300);
+
     return savedUser
 }
 
 const verifyOTP = async (otp, email) => {
+
     const user = await User.findOne({email})
 
     if (!user) {
@@ -38,6 +49,7 @@ const verifyOTP = async (otp, email) => {
 }
 
 const login = async (body) => {
+
     const user = await User.findOne({email: body.email})
 
     if (!user) {
@@ -74,15 +86,19 @@ const login = async (body) => {
 }
 
 const generateOTP = () => {
+
     const digits = '0123456789';
+
     let OTP = '';
     for (let i = 0; i < 4; i++) {
         OTP += digits[Math.floor(Math.random() * 10)];
     }
+
     return OTP;
 }
 
 const forgotPassword = async (email) => {
+
     const user = await User.findOne({email})
 
     if (!user) {
@@ -95,6 +111,7 @@ const forgotPassword = async (email) => {
     const otp = generateOTP()
     await emailService.sendEmail(user.email, otp)
     myCache.set(`OTP${user.id}`, otp, 20);
+
     return user
 }
 
@@ -112,8 +129,7 @@ const resetPassword = async (user, password) => {
         throw new Error("Duplicate password, please enter the new one")
     }
 
-    const saltRounds = 10
-    const newPassword = await bcrypt.hash(password, saltRounds)
+    const newPassword = await user.hashPassword(password)
     user.passwordHash = newPassword
     await user.save()
 
@@ -121,14 +137,16 @@ const resetPassword = async (user, password) => {
 }
 
 const getAll = async () => {
+
     const users = await User.find({})
 
     return users
 }
 
 const getFriendsList = async (id) => {
-    console.log(id)
+
     const friends = User.find({_id: {$ne: id}, verified: true})
+
     return friends
 }
 

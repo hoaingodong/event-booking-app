@@ -7,9 +7,7 @@ const Review = require("../models/review.model");
 const uploadAvatar = async (user, file) => {
 
     const avatar = await imageService.createImage(file)
-
     user.avatar = avatar
-
     user.save()
 
     return user
@@ -34,6 +32,7 @@ const deleteAvatar = async (avatar, user) => {
 const profileEvent = async (id) => {
 
     const user = await User.findById(id)
+
     if (!user) {
         throw new Error("User not found")
     }
@@ -58,11 +57,13 @@ const profileAbout = async (id) => {
 const profileReviews = async (id) => {
 
     const user = await User.findById(id)
+
     if (!user) {
         throw new Error("User not found")
     }
 
     const reviews = await Review.find({toUser: id}).populate("fromUser").populate("toUser")
+
     return reviews
 }
 
@@ -75,7 +76,6 @@ const editProfile = async (id, body) => {
     }
 
     const savedProfile = await User.findByIdAndUpdate(id, profile, {new: true})
-    console.log(savedProfile)
 
     return savedProfile
 }

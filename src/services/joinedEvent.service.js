@@ -5,10 +5,13 @@ const Event = require("../models/event.model")
 const createNew = async (userId, eventId) => {
 
     const user = await User.findById(userId)
+
     if (!user){
         throw new Error("User not found")
     }
+
     const event = await Event.findById(eventId)
+
     if (!event){
         throw new Error("Event not found")
     }
@@ -19,11 +22,13 @@ const createNew = async (userId, eventId) => {
     }
 
     const duplicatedJoinedEvent = await JoinedEvent.findOne({$and: [{user: userId}, {event: eventId}]})
+
     if (duplicatedJoinedEvent) {
         throw new Error("You have already join this event")
     }
 
     const savedMyEvent = await JoinedEvent.create({...myEvent})
+
     return savedMyEvent
 }
 
@@ -35,15 +40,18 @@ const getAllEvents = async (userId) => {
     }
 
     const myEvents = await JoinedEvent.find({user: userId}).populate("event")
+
     return myEvents
 }
 
 const getUpcomingEvent = async (userId) => {
 
     const user = await User.findById(userId)
-    if (!user){
+
+    if (!user) {
         throw new Error("User not found")
     }
+
     const myEvents = await JoinedEvent.find({user: userId}).populate("event")
 
     const myUpcomingEvents = await myEvents.filter(element => element.event?.startDate > Date.now())
@@ -54,9 +62,11 @@ const getUpcomingEvent = async (userId) => {
 const getLastEvent = async (userId) => {
 
     const user = await User.findById(userId)
+
     if (!user){
         throw new Error("User not found")
     }
+
     const myEvents = await JoinedEvent.find({user: userId}).populate("event")
 
     const myLastEvents = await myEvents.filter(element => element.event?.startDate < Date.now())
@@ -67,7 +77,8 @@ const getLastEvent = async (userId) => {
 const getAllUsers = async (eventId) => {
 
     const event = await Event.findById(eventId)
-    if (!event){
+
+    if (!event) {
         throw new Error("Event not found")
     }
 
