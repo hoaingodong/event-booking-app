@@ -35,8 +35,11 @@ const filter = async (body) => {
     if (body.maxPrice) {
         events = events.filter(element => element.price <= body.maxPrice)
     }
-    if (body.minDate && body.maxDate) {
-        events = events.filter(element => body.minDate <= element.startDate <= body.maxDate )
+    if (body.minDate){
+        events = events.filter(element => element.startDate >= body.minDate)
+    }
+    if (body.maxDate){
+        events = events.filter(element => element.endDate <= body.maxDate)
     }
     if (body.thisDate) {
         console.log(Date.now())
