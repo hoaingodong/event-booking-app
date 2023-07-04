@@ -78,9 +78,8 @@ const filterLocation = async (longitude, latitude) => {
 const search = async (body) => {
     let events = await Event.find({})
 
-    const keyword = body.keyword.toLowerCase().replace(/\s+/g, ' ').trim()
-
-    if (keyword) {
+    if (body.keyword) {
+        const keyword = body.keyword.toLowerCase().replace(/\s+/g, ' ').trim()
         events = await events.filter(element => element.title.toLowerCase().includes(keyword))
     }
 
