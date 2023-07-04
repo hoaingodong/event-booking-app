@@ -18,6 +18,7 @@ const filter = async (body) => {
 
     if (body.longitude && body.latitude) {
         events = await filterLocation(body.longitude, body.latitude)
+        events = events.filter(element => (element.startDate >= Date.now()))
         events.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
     }
 
