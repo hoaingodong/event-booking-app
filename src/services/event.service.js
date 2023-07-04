@@ -76,7 +76,8 @@ const filterLocation = async (longitude, latitude) => {
 }
 
 const search = async (body) => {
-    let events = await Event.find({})
+    let events = await Event.find( {startDate: {$gte: Date.now()} })
+    events.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
 
     if (body.keyword) {
         const keyword = body.keyword.toLowerCase().replace(/\s+/g, ' ').trim()
