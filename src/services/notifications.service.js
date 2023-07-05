@@ -1,5 +1,6 @@
 const Notification = require("../models/notification")
 const User = require("../models/user.model");
+const {CustomError} = require("../utils/CustomError");
 
 const createNew = async (notification) => {
 
@@ -20,7 +21,7 @@ const getNotifications = async (id) => {
     const user = await User.findById(id)
 
     if (!user) {
-        throw new Error("User not found")
+        throw new CustomError("User not found", 404)
     }
 
     const notifications = await Notification.find({toUser: id}).populate("fromUser")

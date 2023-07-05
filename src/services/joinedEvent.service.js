@@ -1,19 +1,20 @@
 const JoinedEvent = require("../models/joinedEvent.model")
 const User = require("../models/user.model")
 const Event = require("../models/event.model")
+const {CustomError} = require("../utils/CustomError");
 
 const createNew = async (userId, eventId) => {
 
     const user = await User.findById(userId)
 
     if (!user){
-        throw new Error("User not found")
+        throw new CustomError("User not found", 404)
     }
 
     const event = await Event.findById(eventId)
 
     if (!event){
-        throw new Error("Event not found")
+        throw new CustomError("Event not found", 404)
     }
 
     const myEvent = {
@@ -24,7 +25,7 @@ const createNew = async (userId, eventId) => {
     const duplicatedJoinedEvent = await JoinedEvent.findOne({$and: [{user: userId}, {event: eventId}]})
 
     if (duplicatedJoinedEvent) {
-        throw new Error("You have already join this event")
+        throw new CustomError('You have already join this event', 403)
     }
 
     const savedMyEvent = await JoinedEvent.create({...myEvent})
@@ -36,7 +37,7 @@ const getAllEvents = async (userId) => {
 
     const user = await User.findById(userId)
     if (!user){
-        throw new Error("User not found")
+        throw new CustomError("User not found", 404)
     }
 
     const myEvents = await JoinedEvent.find({user: userId}).populate("event")
@@ -49,7 +50,7 @@ const getUpcomingEvent = async (userId) => {
     const user = await User.findById(userId)
 
     if (!user) {
-        throw new Error("User not found")
+        throw new CustomError("User not found", 404)
     }
 
     const myEvents = await JoinedEvent.find({user: userId}).populate("event")
@@ -64,7 +65,7 @@ const getLastEvent = async (userId) => {
     const user = await User.findById(userId)
 
     if (!user){
-        throw new Error("User not found")
+        throw new CustomError("User not found", 404)
     }
 
     const myEvents = await JoinedEvent.find({user: userId}).populate("event")
@@ -79,7 +80,7 @@ const getAllUsers = async (eventId) => {
     const event = await Event.findById(eventId)
 
     if (!event) {
-        throw new Error("Event not found")
+        throw new CustomError("Event not found", 404)
     }
 
     const users = await JoinedEvent.find({event: eventId}).populate("user")
