@@ -1,4 +1,5 @@
 const multer = require("multer")
+const {CustomError} = require("../utils/CustomError");
 
 //multer.diskStorage() creates a storage space for storing files.
 const storage = multer.diskStorage({
@@ -14,7 +15,7 @@ const fileFilter = (req, file, cb) => {
     }
     else {
         cb({message: "Unsupported file format"}, false)
-        throw new Error("File is not supported")
+        throw new CustomError("File is not supported", 403)
     }}
 
 const upload = multer(({

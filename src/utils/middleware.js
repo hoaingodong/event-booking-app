@@ -1,6 +1,8 @@
 require("dotenv").config()
 const logger = require("./logger")
 const { expressjwt: jwt } = require("express-jwt");
+const { CustomError } = require('./CustomError');
+
 
 const requestLogger = (request, response, next) => {
     logger.info("Method: ", request.method)
@@ -18,12 +20,11 @@ const unknownEndpoint = (request, response) => {
 const errorHandler = (error, request, response, next) => {
     logger.error(error.message)
     console.log(error.name)
-    // console.log(error.message)
-    // console.log(error.name)
 
     if (error.name === "CastError") {
         return response.status(400).send({error: "malformed id"})
-    } else if (error.name === "ValidationError") {
+    }
+    else if (error.name === "ValidationError") {
         return response.status(400).json({error: error.message})
     }
     else if (error.message === "No authorization token was found") {
@@ -41,60 +42,8 @@ const errorHandler = (error, request, response, next) => {
             error: "invalid token"
         })
     }
-    else if (error.message === "You haven't registered with this email") {
-        return response.status(404).json({
-            error: error.message
-        })
-    }
-    else if (error.message === "Wrong OTP or OTP was expired") {
-        return response.status(401).json({
-            error: error.message
-        })
-    }
-    else if (error.message === "Duplicate password, please enter the new one") {
-        return response.status(400).json({
-            error: error.message
-        })
-    }
-    else if (error.message === "Invalid email or password") {
-        return response.status(401).json({
-            error: error.message
-        })
-    }
-    else if (error.message === "Account already activated") {
-        return response.status(401).json({
-            error: error.message
-        })
-    }
-    else if (error.message === "Your account has not been activated") {
-        return response.status(401).json({
-            error: error.message
-        })
-    }
-    else if (error.message === "User not found") {
-        return response.status(404).json({
-            error: error.message
-        })
-    }
-    else if (error.message === "Event not found") {
-        return response.status(404).json({
-            error: error.message
-        })
-    }
-    else if (error.message === "Delete Image unsuccessfully!") {
-        return response.status(404).json({
-            error: error.message
-        })
-    }
-    else if (error.message === "Can not delete your avatar!") {
-        return response.status(404).json({
-            error: error.message
-        })
-    }
-    else if (error.message === "You have already join this event") {
-        return response.status(403).json({
-            error: error.message
-        })
+    else if (error instanceof CustomError) {
+        response.status(error.statusCode).json({ error: error.message });
     }
     else {
         return response.status(502).json({error: "Error Server"})

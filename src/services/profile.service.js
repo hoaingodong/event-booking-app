@@ -3,6 +3,7 @@ const User = require("../models/user.model")
 const cloudinary = require("cloudinary")
 const Event = require("../models/event.model");
 const Review = require("../models/review.model");
+const {CustomError} = require("../utils/CustomError");
 
 const uploadAvatar = async (user, file) => {
 
@@ -19,7 +20,7 @@ const deleteAvatar = async (avatar, user) => {
         const result = await cloudinary.uploader
             .destroy(avatar.id)
         if (result.result == "not found") {
-            throw new Error("Can not delete your avatar")
+            throw new CustomError("Can not delete your avatar", 400)
         }
     }
 
@@ -48,7 +49,7 @@ const profileAbout = async (id) => {
     const detailedUser = await User.findById(id)
 
     if (!detailedUser) {
-        throw new Error("User not found")
+        throw new CustomError("User not found", 404)
     }
 
     return detailedUser
@@ -59,7 +60,7 @@ const profileReviews = async (id) => {
     const user = await User.findById(id)
 
     if (!user) {
-        throw new Error("User not found")
+        throw new CustomError("User not found", 404)
     }
 
     const reviews = await Review.find({toUser: id}).populate("fromUser").populate("toUser")

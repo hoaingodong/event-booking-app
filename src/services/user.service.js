@@ -1,7 +1,8 @@
-const NodeCache = require("node-cache");
-const myCache = new NodeCache();
+const NodeCache = require("node-cache")
+const myCache = new NodeCache()
 const User = require("../models/user.model")
 const emailService = require("./email.service")
+const {CustomError} = require("../utils/CustomError")
 
 const createNew = async (body) => {
 
@@ -17,7 +18,7 @@ const createNew = async (body) => {
 
     const otp = generateOTP()
     await emailService.sendEmail(savedUser.email, otp)
-    myCache.set(`OTP${savedUser.id}`, otp, 300);
+    myCache.set(`OTP${savedUser.id}`, otp, 300)
 
     return savedUser
 }
@@ -27,17 +28,17 @@ const verifyOTP = async (otp, email) => {
     const user = await User.findOne({email})
 
     if (!user) {
-        throw new Error("You haven't registered with this email")
+        throw new CustomError("You haven't registered with this email", 404)
     }
 
     if (user.verified == true) {
-        throw new Error("Account already activated")
+        throw new CustomError("Account already activated", 401)
     }
 
     const result = otp == await myCache.get(`OTP${user.id}`)
 
     if (result == false) {
-        throw new Error("Wrong OTP or OTP was expired")
+        throw new CustomError("Wrong OTP or OTP was expired", 401)
     }
 
     user.verified = true
@@ -53,11 +54,11 @@ const login = async (body) => {
     const user = await User.findOne({email: body.email})
 
     if (!user) {
-        throw new Error("You haven't registered with this email")
+        throw new CustomError("You haven't registered with this email", 404)
     }
 
     if (user.verified == false) {
-        throw new Error("Your account has not been activated")
+        throw new CustomError("Your account has not been activated", 401)
     }
 
     const passwordCorrect = user === null
@@ -65,7 +66,7 @@ const login = async (body) => {
         : await user.comparePassword(body.password)
 
     if (!(user && passwordCorrect)) {
-        throw new Error("Invalid email or password")
+        throw new CustomError("Invalid email or password", 401)
     }
 
     const token = await user.getJwtToken()
@@ -102,7 +103,7 @@ const forgotPassword = async (email) => {
     const user = await User.findOne({email})
 
     if (!user) {
-        throw new Error("You haven't registered with this email")
+        throw new CustomError("You haven't registered with this email", 404);
     }
 
     user.verified = false
@@ -118,15 +119,15 @@ const forgotPassword = async (email) => {
 const resetPassword = async (user, password) => {
 
     if (!user) {
-        throw new Error("You haven't registered with this email")
+        throw new CustomError("You haven't registered with this email", 404)
     }
 
     if (user.verified == false) {
-        throw new Error("Your account has not been activated")
+        throw new CustomError("Your account has not been activated", 401)
     }
 
     if (await user.comparePassword(password)) {
-        throw new Error("Duplicate password, please enter the new one")
+        throw new CustomError("Duplicate password, please enter the new one", 400)
     }
 
     const newPassword = await user.hashPassword(password)

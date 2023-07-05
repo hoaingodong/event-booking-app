@@ -1,6 +1,7 @@
 const cloudinary = require("cloudinary");
 const Event = require("../models/event.model")
 const imageService = require("./image.service");
+const {CustomError} = require("../utils/CustomError");
 
 const getAll = async () => {
     const events = await Event.find({}).populate('organizer')
@@ -132,8 +133,11 @@ const uploadImage = async (event, file) => {
 
 const deleteImage = async (image, event) => {
 
-    await cloudinary.uploader
+    const result = await cloudinary.uploader
         .destroy(image.id)
+    if (result.result == "not found") {
+        throw new CustomError("Can not delete event's image", 400)
+    }
 
     event.image = null
     event.save()
