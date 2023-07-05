@@ -7,7 +7,7 @@ const {errors} = require("celebrate")
 const bodyParser = require("body-parser")
 const middleware = require("./utils/middleware")
 const logger = require("./utils/logger")
-var session = require('express-session')
+const session = require('express-session');
 
 const v1Router = require("./routes/index.route")
 mongoose.set("strictQuery", false)

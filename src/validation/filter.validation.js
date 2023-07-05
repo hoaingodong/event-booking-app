@@ -1,5 +1,4 @@
 const Joi = require("joi");
-const {now} = require("mongoose");
 
 const filterSchema= Joi.object().keys({
     topics: Joi.array().items(Joi.string()),

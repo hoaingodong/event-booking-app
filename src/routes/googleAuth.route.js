@@ -1,19 +1,19 @@
-require("dotenv").config();
-const express = require("express");
-const router = express.Router();
-const passport = require("passport");
-const GoogleTokenStrategy = require("passport-google-token").Strategy;
-const User = require("../models/user.model");
-const {celebrate, Segments} = require("celebrate");
-const Joi = require("joi");
+require("dotenv").config()
+const express = require("express")
+const router = express.Router()
+const passport = require("passport")
+const GoogleTokenStrategy = require("passport-google-token").Strategy
+const {celebrate, Segments} = require("celebrate")
+const Joi = require("joi")
+const User = require("../models/user.model")
 
 passport.serializeUser(function (user, done) {
-    done(null, user);
-});
+    done(null, user)
+})
 
 passport.deserializeUser(function (user, done) {
-    done(null, user);
-});
+    done(null, user)
+})
 
 passport.use(
     new GoogleTokenStrategy(
@@ -22,7 +22,7 @@ passport.use(
             clientSecret: process.env.CLIENT_SECRET,
         },
         async function (accessToken, refreshToken, profile, done) {
-            console.log(accessToken, refreshToken, profile, done);
+            console.log(accessToken, refreshToken, profile, done)
 
             User.findOrCreate(
                 {email: profile.emails[0].value},
@@ -33,14 +33,14 @@ passport.use(
                     if (!user.avatar) {
                         user.avatar = {url: profile._json.picture}
                     }
-                    user.verified = true;
-                    user.save();
+                    user.verified = true
+                    user.save()
                     return done(err, user)
                 }
-            );
+            )
         }
     )
-);
+)
 
 router.post('/google/token', celebrate({
     [Segments.BODY]: {
@@ -50,17 +50,16 @@ router.post('/google/token', celebrate({
 }), (req, res) => {
     passport.authenticate('google-token', async (err, user, info) => {
         if (err) {
-            return res.status(500).send();
+            return res.status(500).send()
         }
         if (!user && info) {
-            return res.status(401).json({error: "Unauthorized"});
+            return res.status(401).json({error: "Unauthorized"})
         }
 
-        const token = await user.getJwtToken();
+        const token = await user.getJwtToken()
         user.tokenDevice = req.body.tokenDevice
-        return res.status(200).json({token, user});
-    })(req, res);
-});
+        return res.status(200).json({token, user})
+    })(req, res)
+})
 
-
-module.exports = router;
+module.exports = router

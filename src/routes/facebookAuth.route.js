@@ -1,18 +1,18 @@
 require("dotenv").config()
 const express = require("express")
 const router = express.Router()
-const passport = require('passport');
-const FacebookTokenStrategy = require('passport-facebook-token');
+const passport = require('passport')
+const FacebookTokenStrategy = require('passport-facebook-token')
+const {celebrate, Segments} = require("celebrate")
+const Joi = require("joi")
 const User = require("../models/user.model")
-const {celebrate, Segments} = require("celebrate");
-const Joi = require("joi");
 
 passport.serializeUser(function (user, done) {
-    done(null, user);
+    done(null, user)
 });
 
 passport.deserializeUser(function (user, done) {
-    done(null, user);
+    done(null, user)
 });
 
 passport.use(new FacebookTokenStrategy({
@@ -29,10 +29,10 @@ passport.use(new FacebookTokenStrategy({
                 user.avatar = {url: profile.photos[0].value}
             }
             user.verified = true
-            return done(err, user);
-        });
+            return done(err, user)
+        })
     }
-));
+))
 
 router.post('/facebook/token', celebrate({
         [Segments.BODY]: {
@@ -56,10 +56,10 @@ router.post('/facebook/token', celebrate({
     },
     (error, req, res, next) => {
         if (error) {
-            res.status(401).json({error: "Unauthorizer"})
+            res.status(401).json({error: "Unauthorized"})
         }
     }
-);
+)
 
 module.exports = router
 

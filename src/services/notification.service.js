@@ -8,22 +8,6 @@ const defaultAppConfig = {
 admin.initializeApp(defaultAppConfig);
 
 const sendNotification = (tokenDevice, body, data) => {
-
-    let ios = {
-        headers: {
-            'apns-priority': '10', //mức độ ưu tiên khi push notification
-            'apns-expiration': '360000'// hết hạn trong 1h
-        },
-        payload: {
-            aps: {
-                alert: {
-                    title: "New notification from Event Booking App"
-                },
-                badge: 1,
-                sound: 'default',
-            }
-        }
-    }
     let message = {
         token: tokenDevice, // token của thiết bị muốn push notification
         notification: {

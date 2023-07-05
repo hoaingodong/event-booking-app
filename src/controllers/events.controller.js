@@ -102,7 +102,7 @@ const createNew = async (request, response, next) => {
         }
 
         try {
-            const savedEvent = await eventService.createNew(event, coordinates)
+            const savedEvent = await eventService.createNew(event)
             response.status(201).json(savedEvent)
         } catch (exception) {
             next(exception)

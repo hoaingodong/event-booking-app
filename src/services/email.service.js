@@ -22,7 +22,7 @@ const sendEmail = async (email, otp) =>
             '      <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">Event Booking application</a>\n' +
             '    </div>\n' +
             '    <p style="font-size:1.1em">Hi,</p>\n' +
-            '    <p>Thank you for choosing Your Brand. Use the following OTP to complete your Sign Up procedures. OTP is valid for 5 minutes</p>\n' +
+            '    <p>Thank you for choosing EventHub. Use the following OTP to complete your Sign Up procedures. OTP is valid for 5 minutes</p>\n' +
             '    <h2 style="background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">'+otp+'</h2>\n' +
             '    <p style="font-size:0.9em;">Regards,<br />My Hoai</p>\n' +
             '    <hr style="border:none;border-top:1px solid #eee" />\n' +
