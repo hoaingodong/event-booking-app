@@ -18,7 +18,7 @@ const createNew = async (body) => {
 
     const otp = generateOTP()
     await emailService.sendEmail(savedUser.email, otp)
-    myCache.set(`OTP${savedUser.id}`, otp, 300)
+    myCache.set(`OTP${savedUser.id}`, otp, 30)
 
     return savedUser
 }
@@ -55,10 +55,6 @@ const login = async (body) => {
 
     if (!user) {
         throw new CustomError("You haven't registered with this email", 404)
-    }
-
-    if (user.verified == false) {
-        throw new CustomError("Your account has not been activated", 401)
     }
 
     const passwordCorrect = user === null
@@ -105,9 +101,6 @@ const forgotPassword = async (email) => {
     if (!user) {
         throw new CustomError("You haven't registered with this email", 404);
     }
-
-    user.verified = false
-    await user.save()
 
     const otp = generateOTP()
     await emailService.sendEmail(user.email, otp)
