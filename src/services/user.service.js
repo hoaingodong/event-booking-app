@@ -31,10 +31,6 @@ const verifyOTP = async (otp, email) => {
         throw new CustomError("You haven't registered with this email", 404)
     }
 
-    if (user.verified == true) {
-        throw new CustomError("Account already activated", 401)
-    }
-
     const result = otp == await myCache.get(`OTP${user.id}`)
 
     if (result == false) {
@@ -60,6 +56,10 @@ const login = async (body) => {
     const passwordCorrect = user === null
         ? false
         : await user.comparePassword(body.password)
+
+    // if (user.verified == false) {
+    //     throw new CustomError("Your account has not been activated", 401)
+    // }
 
     if (!(user && passwordCorrect)) {
         throw new CustomError("Invalid email or password", 401)

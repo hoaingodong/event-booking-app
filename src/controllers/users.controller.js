@@ -17,7 +17,7 @@ const verifyOTP = async (request, response, next) => {
     const body = request.body
     try {
         const result = await userService.verifyOTP(body.otp, body.email)
-        response.status(200).json({token: result.token})
+        response.status(200).json(result)
     } catch (exception) {
         next(exception)
     }
