@@ -6,6 +6,7 @@ const reviewSchema = require("../validation/review.validation");
 // const middleware = require("../utils/middleware")
 
 router.get("/", reviewsController.getAll)
+router.get("/:id", reviewsController.getDetail)
 router.post("/",  celebrate({[Segments.BODY]:reviewSchema}),  reviewsController.createNew)
 router.delete("/:id", reviewsController.deleteOne)
 

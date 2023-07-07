@@ -32,6 +32,17 @@ const createNew = async (request, response, next) => {
     }
 }
 
+const getDetail = async (request, response, next) => {
+    const id = request.params.id
+
+    try {
+        const review = await reviewService.getDetail(id)
+        response.status(200).json(review)
+    } catch (exception) {
+        next(exception)
+    }
+}
+
 module.exports = {
-    getAll, deleteOne, createNew
+    getAll, deleteOne, createNew, getDetail
 }

@@ -1,4 +1,5 @@
 const Review = require("../models/review.model")
+const Event = require("../models/event.model");
 
 const getAll = async () => {
 
@@ -29,6 +30,16 @@ const createNew = async (body) => {
     return savedReview
 }
 
+const getOne = async (id) => {
+
+}
+
+const getDetail = async (id) => {
+    const review = await Review.findById(id).populate("fromUser").populate("toUser")
+
+    return review
+}
+
 module.exports = {
-    getAll, deleteOne, createNew
+    getAll, deleteOne, createNew, getDetail
 }
