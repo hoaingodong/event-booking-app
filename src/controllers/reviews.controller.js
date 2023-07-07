@@ -21,6 +21,17 @@ const deleteOne = async (request, response, next) => {
     }
 }
 
+const createNew = async (request, response, next) => {
+    const body = request.body
+
+    try {
+        const review = await reviewService.createNew(body)
+        response.status(201).json(review)
+    } catch (exception) {
+        next(exception)
+    }
+}
+
 module.exports = {
-    getAll, deleteOne
+    getAll, deleteOne, createNew
 }

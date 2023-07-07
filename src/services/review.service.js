@@ -14,6 +14,21 @@ const deleteOne = async (id) => {
     return review
 }
 
+const createNew = async (body) => {
+
+    const review = {
+        fromUser: body.fromUser,
+        toUser: body.toUser,
+        content: body.content,
+        date: body.date,
+        stars: body.stars
+    }
+
+    const savedReview = await Review.create({...review})
+
+    return savedReview
+}
+
 module.exports = {
-    getAll, deleteOne
+    getAll, deleteOne, createNew
 }
