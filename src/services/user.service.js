@@ -130,9 +130,19 @@ const resetPassword = async (user, password) => {
     return user
 }
 
-const getAll = async () => {
+const getAll = async (body) => {
+    const perPage = body.perPage
+    const page = body.page
+    console.log(body)
 
-    const users = await User.find({})
+    let users = []
+
+    if (perPage && page){
+        users = await User.find({}).limit(perPage).skip(perPage * page)
+    }
+    else {
+        users = await User.find({})
+    }
 
     return users
 }

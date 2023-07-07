@@ -1,5 +1,6 @@
 const userService = require("../services/user.service")
 const User = require("../models/user.model");
+const eventService = require("../services/event.service");
 
 const createNew = async (request, response, next) => {
 
@@ -60,9 +61,11 @@ const resetPassword = async (request, response, next) => {
 }
 
 const getAll = async (request, response, next) => {
+    const body = request.query
+
     try {
-        const user = await userService.getAll()
-        response.status(200).json(user)
+        const users = await userService.getAll(body)
+        response.status(200).json(users)
     } catch (exception) {
         next(exception)
     }
