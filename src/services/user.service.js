@@ -58,7 +58,7 @@ const login = async (body) => {
         : await user.comparePassword(body.password)
 
     if (user.verified == false) {
-        throw new CustomError("Your account has not been activated", 401)
+        throw new Error("Your account has not been activated")
     }
 
     if (!(user && passwordCorrect)) {

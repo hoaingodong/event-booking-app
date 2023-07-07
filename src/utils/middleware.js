@@ -42,6 +42,12 @@ const errorHandler = (error, request, response, next) => {
             error: "invalid token"
         })
     }
+    else if (error.message === "Your account has not been activated") {
+        return response.status(401).json({
+            error: error.message,
+            statusCode: 401
+        })
+    }
     else if (error instanceof CustomError) {
         response.status(error.statusCode).json({ error: error.message });
     }
