@@ -7,6 +7,7 @@ const reviewSchema = require("../validation/review.validation");
 router.get("/", reviewsController.getAll)
 router.get("/:id", reviewsController.getDetail)
 router.post("/",  celebrate({[Segments.BODY]:reviewSchema}),  reviewsController.createNew)
+router.put("/",  celebrate({[Segments.BODY]:reviewSchema}),  reviewsController.update)
 router.delete("/:id", reviewsController.deleteOne)
 
 module.exports = router

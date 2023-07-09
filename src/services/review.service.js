@@ -40,6 +40,21 @@ const createNew = async (body) => {
     return savedReview
 }
 
+const update = async (id, body) => {
+
+    const review = {
+        fromUser: body.fromUser,
+        toUser: body.toUser,
+        content: body.content,
+        date: body.date,
+        stars: body.stars
+    }
+
+    const savedReview = await Review.findByIdAndUpdate(id, {...review}, {new: true})
+
+    return savedReview
+}
+
 
 const getDetail = async (id) => {
     const review = await Review.findById(id)
@@ -48,5 +63,5 @@ const getDetail = async (id) => {
 }
 
 module.exports = {
-    getAll, deleteOne, createNew, getDetail
+    getAll, deleteOne, createNew, getDetail, update
 }

@@ -34,6 +34,18 @@ const createNew = async (request, response, next) => {
     }
 }
 
+const update = async (request, response, next) => {
+    const id = request.params.id
+    const body = request.body
+
+    try {
+        const savedReview = await reviewService.update(id, body)
+        response.status(200).json(savedReview)
+    } catch (exception) {
+        next(exception)
+    }
+}
+
 const getDetail = async (request, response, next) => {
     const id = request.params.id
 
@@ -46,5 +58,5 @@ const getDetail = async (request, response, next) => {
 }
 
 module.exports = {
-    getAll, deleteOne, createNew, getDetail
+    getAll, deleteOne, createNew, getDetail, update
 }
