@@ -1,9 +1,19 @@
 const Review = require("../models/review.model")
 const Event = require("../models/event.model");
 
-const getAll = async () => {
+const getAll = async (body) => {
 
-    const reviews = await Review.find({}).populate("fromUser").populate("toUser")
+    const perPage = body.perPage
+    const page = body.page
+
+    let reviews = []
+
+    if (perPage && page){
+        reviews = await Review.find({}).limit(perPage).skip(perPage * page)
+    }
+    else {
+        reviews = await Review.find({})
+    }
 
     return reviews
 }
@@ -30,12 +40,9 @@ const createNew = async (body) => {
     return savedReview
 }
 
-const getOne = async (id) => {
-
-}
 
 const getDetail = async (id) => {
-    const review = await Review.findById(id).populate("fromUser").populate("toUser")
+    const review = await Review.findById(id)
 
     return review
 }

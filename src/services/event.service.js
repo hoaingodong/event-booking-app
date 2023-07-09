@@ -24,7 +24,13 @@ const filter = async (body) => {
     }
 
     else {
-        events = await Event.find( {startDate: {$gte: Date.now()} })
+        if (body.page && body.perPage) {
+            events = await Event.find( {startDate: {$gte: Date.now()} }).limit(body.perPage).skip(body.perPage * body.page)
+        }
+        else {
+            events = await Event.find( {startDate: {$gte: Date.now()} })
+        }
+
     }
 
     events.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());

@@ -17,7 +17,9 @@ const filterSchema= Joi.object().keys({
         Joi.number(),
         Joi.string()
     ],
-    keyword: Joi.string()
+    keyword: Joi.string(),
+    page: Joi.number(),
+    perPage: Joi.number()
 })
 
 module.exports = filterSchema

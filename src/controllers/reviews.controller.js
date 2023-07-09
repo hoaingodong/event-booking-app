@@ -2,8 +2,10 @@ const reviewService = require("../services/review.service")
 
 const getAll = async (request, response, next) => {
 
+    const body = request.query 
+
     try {
-        const reviews = await reviewService.getAll()
+        const reviews = await reviewService.getAll(body)
         response.status(200).json(reviews)
     } catch (exception) {
         next(exception)
