@@ -1,5 +1,4 @@
 const Review = require("../models/review.model")
-const Event = require("../models/event.model");
 
 const getAll = async (body) => {
 
@@ -63,7 +62,7 @@ const update = async (id, body) => {
 
 
 const getDetail = async (id) => {
-    const review = await Review.findById(id).populate("toUser")
+    const review = await Review.findById(id)
 
     return review
 }
