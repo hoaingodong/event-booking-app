@@ -14,6 +14,12 @@ const getAll = async (body) => {
     else {
         reviews = await Review.find({})
     }
+    if (body.filter){
+        const filter = JSON.parse((body.filter))
+        reviews = reviews.filter(element =>
+            element.toUser.toString() === filter.toUser
+        )
+    }
 
     return reviews
 }
@@ -57,7 +63,7 @@ const update = async (id, body) => {
 
 
 const getDetail = async (id) => {
-    const review = await Review.findById(id)
+    const review = await Review.findById(id).populate("toUser")
 
     return review
 }
