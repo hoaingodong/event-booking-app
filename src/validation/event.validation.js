@@ -18,7 +18,8 @@ const updateEventSchema = Joi.object().keys({
     ],
     address: Joi.string().required(),
     location: Joi.any(),
-    image: Joi.any()
+    image: Joi.any(),
+    organizer: Joi.any()
 })
 
 const createEventSchema = updateEventSchema.keys({
