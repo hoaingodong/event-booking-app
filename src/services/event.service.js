@@ -10,7 +10,7 @@ const getAll = async () => {
 }
 
 const getDetail = async (id) => {
-    const event = await Event.findById(id).populate("organizer")
+    const event = await Event.findById(id)
 
     return event
 }
