@@ -183,6 +183,12 @@ const loginAdmin = async (body) => {
     return {token, user}
 }
 
+const getDetail = async (id) => {
+    const user = await User.findById(id)
+
+    return user
+}
+
 module.exports = {
     createNew,
     verifyOTP,
@@ -191,5 +197,6 @@ module.exports = {
     resetPassword,
     getAll,
     getFriendsList,
-    loginAdmin
+    loginAdmin,
+    getDetail
 }
