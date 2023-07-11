@@ -71,6 +71,16 @@ const getAll = async (request, response, next) => {
     }
 }
 
+const loginAdmin = async (request, response, next) => {
+    const body = request.body
+    try {
+        const user = await userService.loginAdmin(body)
+        response.status(200).json(user)
+    } catch (exception) {
+        next(exception)
+    }
+}
+
 module.exports = {
-    createNew, verifyOTP, login, forgotPassword, resetPassword, getAll
+    createNew, verifyOTP, login, forgotPassword, resetPassword, getAll, loginAdmin
 }
