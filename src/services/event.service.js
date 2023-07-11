@@ -103,13 +103,6 @@ const createNew = async (event) => {
 
 const update = async (id, body) => {
 
-    const coordinates = {
-        longitude: body.longitude,
-        latitude: body.latitude
-    }
-    const location = {
-        coordinates: coordinates
-    }
     const event = {
         title: body.title,
         topics: body.topics,
@@ -118,7 +111,7 @@ const update = async (id, body) => {
         startDate: body.startDate,
         endDate: body.endDate,
         address: body.address,
-        location: location
+        location: body.location
     }
 
     const savedEvent = await Event.findByIdAndUpdate(id, {...event}, {new: true})
