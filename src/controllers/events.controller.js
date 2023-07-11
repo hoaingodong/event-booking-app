@@ -74,8 +74,6 @@ const createNew = async (request, response, next) => {
     const body = request.body
 
     try {
-        const file = request.files[0]
-        const image = await imageService.createImage(file)
         const coordinates = {
             longitude: body.longitude,
             latitude: body.latitude
@@ -88,7 +86,7 @@ const createNew = async (request, response, next) => {
             topics: body.topics,
             price: body.price,
             introduction: body.introduction,
-            image: image,
+            image: body.image,
             startDate: body.startDate,
             endDate: body.endDate,
             organizer: body.organizer,
