@@ -7,8 +7,8 @@ const middleware = require("../utils/middleware");
 
 router.get("/", middleware.authJwt(), reviewsController.getAll)
 router.get("/:id", reviewsController.getDetail)
-router.post("/",  celebrate({[Segments.BODY]:reviewSchema}),  reviewsController.createNew)
-router.put("/",  celebrate({[Segments.BODY]:reviewSchema}),  reviewsController.update)
+router.post("/", celebrate({[Segments.BODY]:reviewSchema}),  reviewsController.createNew)
+router.put("/:id", celebrate({[Segments.BODY]:reviewSchema}),  reviewsController.update)
 router.delete("/:id", reviewsController.deleteOne)
 
 module.exports = router
