@@ -16,6 +16,7 @@ const middleware = require("../utils/middleware")
 router.post("/register", celebrate({[Segments.BODY]:userSchema}), userController.createNew)
 router.post("/verify-otp", celebrate({[Segments.BODY]:otpSchema}), userController.verifyOTP)
 router.post("/login", celebrate({[Segments.BODY]:loginSchema}), userController.login)
+router.post("/login-admin", celebrate({[Segments.BODY]:loginSchema}), userController.loginAdmin)
 router.post("/send-otp", celebrate({[Segments.BODY]: {email: Joi.string().email().required()}}), userController.forgotPassword)
 router.post("/reset-password", middleware.authJwt(), celebrate({[Segments.BODY]:resetPasswordSchema}), userController.resetPassword)
 

@@ -1,6 +1,7 @@
 const Joi = require("joi")
 
 const updateEventSchema = Joi.object().keys({
+    id: Joi.string(),
     title: Joi.string().required(),
     topics: Joi.array().items(Joi.string()).required(),
     price: Joi.number().required(),
@@ -15,7 +16,10 @@ const updateEventSchema = Joi.object().keys({
         Joi.number().required(),
         Joi.string().required()
     ],
-    address: Joi.string().required()
+    address: Joi.string().required(),
+    location: Joi.any(),
+    image: Joi.any(),
+    organizer: Joi.any()
 })
 
 const createEventSchema = updateEventSchema.keys({

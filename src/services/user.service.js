@@ -154,6 +154,41 @@ const getFriendsList = async (id) => {
     return friends
 }
 
+const loginAdmin = async (body) => {
+
+    const user = await User.findOne({email: body.email})
+
+    if (!user) {
+        throw new CustomError("You haven't registered with this email", 404)
+    }
+
+    const passwordCorrect = user === null
+        ? false
+        : await user.comparePassword(body.password)
+
+    if (user.verified == false) {
+        throw new Error("Your account has not been activated")
+    }
+
+    if (user.role !== "ADMIN") {
+        throw new CustomError("Not the admin account", 401)
+    }
+
+    if (!(user && passwordCorrect)) {
+        throw new CustomError("Invalid email or password", 401)
+    }
+
+    const token = await user.getJwtToken()
+
+    return {token, user}
+}
+
+const getDetail = async (id) => {
+    const user = await User.findById(id)
+
+    return user
+}
+
 module.exports = {
     createNew,
     verifyOTP,
@@ -161,5 +196,7 @@ module.exports = {
     forgotPassword,
     resetPassword,
     getAll,
-    getFriendsList
+    getFriendsList,
+    loginAdmin,
+    getDetail
 }

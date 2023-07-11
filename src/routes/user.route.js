@@ -5,6 +5,7 @@ const profileController = require("../controllers/profile.controller")
 
 //get all users
 router.get("/", userController.getAll)
+router.get("/:id", userController.getDetail)
 //organizer profile
 router.get("/:id/profile/events/", profileController.profileEvent)
 router.get("/:id/profile/about", profileController.profileAbout)

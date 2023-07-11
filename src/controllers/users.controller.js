@@ -1,6 +1,7 @@
 const userService = require("../services/user.service")
 const User = require("../models/user.model");
 const eventService = require("../services/event.service");
+const Review = require("../models/review.model");
 
 const createNew = async (request, response, next) => {
 
@@ -71,6 +72,29 @@ const getAll = async (request, response, next) => {
     }
 }
 
+const loginAdmin = async (request, response, next) => {
+    const body = request.body
+    try {
+        const user = await userService.loginAdmin(body)
+        response.status(200).json(user)
+    } catch (exception) {
+        next(exception)
+    }
+}
+
+const getDetail = async (request, response, next) => {
+    const id = request.params.id
+
+    try {
+        const user = await userService.getDetail(id)
+        response.status(200).json(user)
+    } catch (exception) {
+        next(exception)
+    }
+}
+
+
+
 module.exports = {
-    createNew, verifyOTP, login, forgotPassword, resetPassword, getAll
+    createNew, verifyOTP, login, forgotPassword, resetPassword, getAll, loginAdmin, getDetail
 }

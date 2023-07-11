@@ -1,5 +1,4 @@
 const Review = require("../models/review.model")
-const Event = require("../models/event.model");
 
 const getAll = async (body) => {
 
@@ -13,6 +12,12 @@ const getAll = async (body) => {
     }
     else {
         reviews = await Review.find({})
+    }
+    if (body.filter){
+        const filter = JSON.parse((body.filter))
+        reviews = reviews.filter(element =>
+            element.toUser.toString() === filter.toUser
+        )
     }
 
     return reviews
