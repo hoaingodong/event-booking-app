@@ -5,7 +5,8 @@ const reviewSchema = Joi.object().keys({
     toUser: Joi.string().required(),
     content: Joi.string().required(),
     stars: Joi.number().required(),
-    date: Joi.date().required()
+    date: Joi.date().required(),
+    id: Joi.string()
 })
 
 module.exports = reviewSchema
